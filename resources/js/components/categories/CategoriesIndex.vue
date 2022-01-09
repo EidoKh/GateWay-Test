@@ -1,13 +1,6 @@
 <template>
-  <div
-    class="
-      overflow-hidden overflow-x-auto
-      min-w-full
-      align-middle
-      sm:rounded-md
-    "
-  >
-    <div class="flex place-content-end mb-4">
+  <div class="block w-full overflow-x-auto">
+    <div class="mx-2 flex justify-between place-content-end mb-4">
       <div
         class="
           px-4
@@ -16,189 +9,165 @@
           bg-indigo-600
           hover:bg-indigo-700
           cursor-pointer
+          rounded-lg
         "
       >
         <router-link
           :to="{ name: 'categories.create' }"
           class="text-sm font-medium"
-          >Create category</router-link
+          >إضافة فئة</router-link
         >
       </div>
+      <div>
+        <h3 class="text-xl">كل الفئات</h3>
+      </div>
     </div>
-
-    <table class="min-w-full border divide-y divide-gray-200">
+    <table class="items-center w-full bg-transparent border-collapse">
       <thead>
         <tr>
-          <th class="px-6 py-3 bg-gray-50">
-            <span
-              class="
-                text-xs
-                font-medium
-                tracking-wider
-                leading-4
-                text-left text-gray-500
-                uppercase
-              "
-              >Name</span
-            >
+          <th
+            class="
+              px-4
+              bg-gray-100
+              dark:bg-gray-600
+              text-gray-500
+              dark:text-gray-100
+              align-middle
+              border border-solid border-gray-200
+              dark:border-gray-500
+              py-3
+              text-xs
+              uppercase
+              border-l-0 border-r-0
+              whitespace-nowrap
+              font-semibold
+              text-left
+            "
+          >
+            عمليات
           </th>
-          <th class="px-6 py-3 bg-gray-50">
-            <span
-              class="
-                text-xs
-                font-medium
-                tracking-wider
-                leading-4
-                text-left text-gray-500
-                uppercase
-              "
-              >Email</span
-            >
+          <th
+            class="
+              px-4
+              bg-gray-100
+              dark:bg-gray-600
+              text-gray-500
+              dark:text-gray-100
+              align-middle
+              border border-solid border-gray-200
+              dark:border-gray-500
+              py-3
+              text-xs
+              uppercase
+              border-l-0 border-r-0
+              whitespace-nowrap
+              font-semibold
+              text-right
+            "
+          >
+            الأسم
           </th>
-          <th class="px-6 py-3 bg-gray-50">
-            <span
-              class="
-                text-xs
-                font-medium
-                tracking-wider
-                leading-4
-                text-left text-gray-500
-                uppercase
-              "
-              >Address</span
-            >
+          <th
+            class="
+              px-4
+              bg-gray-100
+              dark:bg-gray-600
+              text-gray-500
+              dark:text-gray-100
+              align-middle
+              border border-solid border-gray-200
+              dark:border-gray-500
+              py-3
+              text-xs
+              uppercase
+              border-l-0 border-r-0
+              whitespace-nowrap
+              font-semibold
+              text-right
+              min-w-140-px
+            "
+          >
+            ت
           </th>
-          <th class="px-6 py-3 bg-gray-50">
-            <span
-              class="
-                text-xs
-                font-medium
-                tracking-wider
-                leading-4
-                text-left text-gray-500
-                uppercase
-              "
-              >Website</span
-            >
-          </th>
-          <th class="px-6 py-3 bg-gray-50"></th>
         </tr>
       </thead>
-
-      <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-        <template v-for="item in categories" :key="item.id">
-          <tr class="bg-white">
-            <td
+      <tbody>
+        <template v-for="category in categories" :key="category.id">
+          <tr class="text-gray-700 dark:text-gray-100">
+            <th
               class="
-                px-6
-                py-4
-                text-sm
-                leading-5
-                text-gray-900
-                whitespace-no-wrap
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+                flex
               "
             >
-              {{ item.name }}
-            </td>
-            <td
-              class="
-                px-6
-                py-4
-                text-sm
-                leading-5
-                text-gray-900
-                whitespace-no-wrap
-              "
-            >
-              {{ item.email }}
-            </td>
-            <td
-              class="
-                px-6
-                py-4
-                text-sm
-                leading-5
-                text-gray-900
-                whitespace-no-wrap
-              "
-            >
-              {{ item.address }}
-            </td>
-            <td
-              class="
-                px-6
-                py-4
-                text-sm
-                leading-5
-                text-gray-900
-                whitespace-no-wrap
-              "
-            >
-              {{ item.website }}
-            </td>
-            <td
-              class="
-                px-6
-                py-4
-                text-sm
-                leading-5
-                text-gray-900
-                whitespace-no-wrap
-              "
-            >
+              <span class="cursor-pointer" @click="deleteCategory(category.id)"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  /></svg
+              ></span>
               <router-link
-                :to="{ name: 'categories.edit', params: { id: item.id } }"
-                class="
-                  mr-2
-                  inline-flex
-                  items-center
-                  px-4
-                  py-2
-                  bg-gray-800
-                  border border-transparent
-                  rounded-md
-                  font-semibold
-                  text-xs text-white
-                  uppercase
-                  tracking-widest
-                  hover:bg-gray-700
-                  active:bg-gray-900
-                  focus:outline-none focus:border-gray-900 focus:ring
-                  ring-gray-300
-                  disabled:opacity-25
-                  transition
-                  ease-in-out
-                  duration-150
-                "
+                :to="{ name: 'categories.edit', params: { id: category.id } }"
               >
-                Edit
-              </router-link>
-              <button
-                @click="deleteCategory(item.id)"
-                class="
-                  inline-flex
-                  items-center
-                  px-4
-                  py-2
-                  bg-gray-800
-                  border border-transparent
-                  rounded-md
-                  font-semibold
-                  text-xs text-white
-                  uppercase
-                  tracking-widest
-                  hover:bg-gray-700
-                  active:bg-gray-900
-                  focus:outline-none focus:border-gray-900 focus:ring
-                  ring-gray-300
-                  disabled:opacity-25
-                  transition
-                  ease-in-out
-                  duration-150
-                "
-              >
-                Delete
-              </button>
+                <span class="cursor-pointer"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 text-indigo-300"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    /></svg></span
+              ></router-link>
+            </th>
+            <th
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ category.category_name }}
+            </th>
+            <td
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ category.id }}
             </td>
           </tr>
         </template>

@@ -24,10 +24,7 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'email' => ['required', 'email'],
-            'address' => ['string'],
-            'website' => ['url'],
+            'category_name' => ['required'],
         ];
     }
 }

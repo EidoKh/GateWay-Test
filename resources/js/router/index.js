@@ -1,16 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Dashboard from "../components/Dashboard";
+import Test from "../components/categories/Test";
 import CategoriesIndex from "../components/categories/CategoriesIndex";
 import CategoriesCreate from "../components/categories/CategoriesCreate";
 import CategoriesEdit from "../components/categories/CategoriesEdit";
-import Dashboard from "../components/Dashboard";
-import Test from "../components/categories/Test";
+
+import BooksIndex from "../components/books/BooksIndex";
+import BooksCreate from "../components/books/BooksCreate";
 
 const routes = [
     {
         path: "/dashboard",
-        name: "categories.index",
+        name: "dashboard",
         component: Dashboard,
+    },
+    {
+        path: "/categories",
+        name: "categories.index",
+        component: CategoriesIndex,
     },
     {
         path: "/categories/create",
@@ -23,6 +31,18 @@ const routes = [
         component: CategoriesEdit,
         props: true,
     },
+
+    {
+        path: "/books",
+        name: "books.index",
+        component: BooksIndex,
+    },
+    {
+        path: "/books/create",
+        name: "books.create",
+        component: BooksCreate,
+    },
+
     {
         path: "/categories/test",
         name: "categories.test",

@@ -17,7 +17,7 @@
         <li>
           <button
             aria-hidden="true"
-            @click="toggleTheme"
+            @click="$emit('change_theme')"
             class="
               group
               p-2
@@ -33,7 +33,7 @@
             "
           >
             <svg
-              x-show="isDark"
+              v-show="isDark"
               width="24"
               height="24"
               class="
@@ -58,7 +58,7 @@
               />
             </svg>
             <svg
-              x-show="!isDark"
+              v-show="!isDark"
               width="24"
               height="24"
               class="
@@ -92,7 +92,8 @@
             :to="{ name: 'categories.index' }"
             class="flex items-center mr-4 hover:text-blue-100"
           >
-            <span class="inline-flex mr-1">
+            خروج
+            <span class="inline-flex ml-1">
               <svg
                 class="w-5 h-5"
                 fill="none"
@@ -108,7 +109,6 @@
                 ></path>
               </svg>
             </span>
-            Logout
           </router-link>
         </li>
       </ul>
@@ -126,6 +126,21 @@
           border border-gray-200
         "
       >
+        <input
+          type="search"
+          name=""
+          id=""
+          placeholder="بحث"
+          class="
+            w-full
+            pr-3
+            text-sm text-black
+            outline-none
+            focus:outline-none
+            bg-transparent
+            text-right
+          "
+        />
         <button class="outline-none focus:outline-none">
           <svg
             class="w-5 text-gray-600 h-5 cursor-pointer"
@@ -139,20 +154,6 @@
             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
           </svg>
         </button>
-        <input
-          type="search"
-          name=""
-          id=""
-          placeholder="Search"
-          class="
-            w-full
-            pl-3
-            text-sm text-black
-            outline-none
-            focus:outline-none
-            bg-transparent
-          "
-        />
       </div>
     </div>
 
@@ -171,17 +172,25 @@
         border-none
       "
     >
-      <img
-        class="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
+      <span class="hidden md:block">المسؤول</span
+      ><img
+        class="w-7 h-7 md:w-10 md:h-10 ml-2 rounded-md overflow-hidden"
         src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg"
       />
-      <span class="hidden md:block">ADMIN</span>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  emits: ["change_theme"],
+  props: {
+    isDark: {
+      type: Boolean,
+      default: true,
+    },
+  },
+};
 </script>
 
 <style>
