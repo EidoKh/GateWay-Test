@@ -247,7 +247,7 @@
         />
       </div>
     </div>
-    <div class="flex w-full justify-end mt-2" v-if="imagePreview">
+    <div class="flex w-full mt-2" v-if="imagePreview">
       <img
         :src="imagePreview"
         alt=""
@@ -278,7 +278,7 @@
         type="file"
         id="book-image"
       />
-      <label for="book-image" class="text-right w-100 flex justify-end"
+      <label for="book-image" class="text-right w-100 flex"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-12 cursor-pointer"

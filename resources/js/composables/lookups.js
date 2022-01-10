@@ -2,6 +2,7 @@ import axios from "axios";
 import { ref } from "vue";
 
 export default function useLookups() {
+    const URL = "http://127.0.0.1:8000/";
     const categories = ref("");
     const authors = ref(null);
     const getCategories = async () => {
@@ -18,5 +19,6 @@ export default function useLookups() {
         categories,
         getCategories,
         getAuthors,
+        URL,
     };
 }

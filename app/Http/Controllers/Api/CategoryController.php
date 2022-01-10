@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\EmptyResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -88,7 +89,7 @@ class CategoryController extends Controller
             'category_image' => $imageName
         ]);
 
-        // return new CategoryResource($category);
+        return new EmptyResource($category);
     }
 
     /**

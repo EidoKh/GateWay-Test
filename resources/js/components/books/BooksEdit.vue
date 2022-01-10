@@ -247,14 +247,22 @@
         />
       </div>
     </div>
-    <div class="flex w-full justify-end mt-2" v-if="imagePreview">
+    <div
+      class="flex w-full justify-end mt-2"
+      v-if="book.book_image != undefined"
+    >
       <img
-        :src="imagePreview"
+        :src="
+          imagePreview != null
+            ? imagePreview
+            : URL + 'images/books_images/' + book.book_image
+        "
         alt=""
         class="figure-img img-fluid rounded"
         style="max-height: 100px"
       />
     </div>
+
     <div class="flex flex-col mt-2">
       <input
         class="
@@ -318,12 +326,14 @@
       حفظ
     </button>
   </form>
+  {{ book }}
 </template>
 
 
 <script>
 import useBooks from "../../composables/books";
-import { onMounted } from "vue";
+import useLookups from "../../composables/lookups";
+import { onMounted, reactive, ref } from "vue";
 
 export default {
   props: {
@@ -335,17 +345,40 @@ export default {
 
   setup(props) {
     const { errors, book, getBook, updateBook } = useBooks();
+    const { getCategories, categories, getAuthors, authors, URL } =
+      useLookups();
 
-    onMounted(getBook(props.id));
+    onMounted(() => {
+      getBook(props.id);
+      getCategories();
+      getAuthors();
+    });
 
     const saveBook = async () => {
-      await updateBook(props.id);
+      await updateBook(props.id, { form: book.value, file });
     };
+    let file = reactive(null);
+    let imagePreview = ref(null);
+
+    function onFileSelected(event) {
+      file = event.target.files[0];
+
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        imagePreview.value = event.target.result;
+      };
+    }
 
     return {
       errors,
       book,
       saveBook,
+      categories,
+      authors,
+      URL,
+      onFileSelected,
+      imagePreview,
     };
   },
 };

@@ -1,6 +1,9 @@
 <template>
   <div class="block w-full overflow-x-auto">
     <div class="mx-2 flex justify-between place-content-end mb-4">
+      <div>
+        <h3 class="text-xl">كل الكتب</h3>
+      </div>
       <div
         class="
           px-4
@@ -15,9 +18,6 @@
         <router-link :to="{ name: 'books.create' }" class="text-sm font-medium"
           >إضافة كتاب</router-link
         >
-      </div>
-      <div>
-        <h3 class="text-xl">كل الكتب</h3>
       </div>
     </div>
     <table class="items-center w-full bg-transparent border-collapse">
@@ -39,11 +39,56 @@
               border-l-0 border-r-0
               whitespace-nowrap
               font-semibold
-              text-left
+              text-right
+              min-w-140-px
             "
           >
-            عمليات
+            ت
           </th>
+
+          <th
+            class="
+              px-4
+              bg-gray-100
+              dark:bg-gray-600
+              text-gray-500
+              dark:text-gray-100
+              align-middle
+              border border-solid border-gray-200
+              dark:border-gray-500
+              py-3
+              text-xs
+              uppercase
+              border-l-0 border-r-0
+              whitespace-nowrap
+              font-semibold
+              text-right
+            "
+          >
+            العنوان
+          </th>
+          <th
+            class="
+              px-4
+              bg-gray-100
+              dark:bg-gray-600
+              text-gray-500
+              dark:text-gray-100
+              align-middle
+              border border-solid border-gray-200
+              dark:border-gray-500
+              py-3
+              text-xs
+              uppercase
+              border-l-0 border-r-0
+              whitespace-nowrap
+              font-semibold
+              text-right
+            "
+          >
+            المؤلف
+          </th>
+
           <th
             class="
               px-4
@@ -84,56 +129,72 @@
               text-right
             "
           >
-            المؤلف
-          </th>
-          <th
-            class="
-              px-4
-              bg-gray-100
-              dark:bg-gray-600
-              text-gray-500
-              dark:text-gray-100
-              align-middle
-              border border-solid border-gray-200
-              dark:border-gray-500
-              py-3
-              text-xs
-              uppercase
-              border-l-0 border-r-0
-              whitespace-nowrap
-              font-semibold
-              text-right
-            "
-          >
-            العنوان
-          </th>
-          <th
-            class="
-              px-4
-              bg-gray-100
-              dark:bg-gray-600
-              text-gray-500
-              dark:text-gray-100
-              align-middle
-              border border-solid border-gray-200
-              dark:border-gray-500
-              py-3
-              text-xs
-              uppercase
-              border-l-0 border-r-0
-              whitespace-nowrap
-              font-semibold
-              text-right
-              min-w-140-px
-            "
-          >
-            ت
+            عمليات
           </th>
         </tr>
       </thead>
       <tbody>
         <template v-for="book in books" :key="book.id">
           <tr class="text-gray-700 dark:text-gray-100">
+            <td
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ book.id }}
+            </td>
+
+            <th
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ book.title }}
+            </th>
+
+            <th
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ book.author }}
+            </th>
+
+            <th
+              class="
+                border-t-0
+                px-4
+                align-middle
+                border-l-0 border-r-0
+                text-xs
+                whitespace-nowrap
+                p-4
+                text-right
+              "
+            >
+              {{ book.category }}
+            </th>
             <th
               class="
                 border-t-0
@@ -181,62 +242,6 @@
                     /></svg></span
               ></router-link>
             </th>
-            <th
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ book.category }}
-            </th>
-            <th
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ book.author }}
-            </th>
-            <th
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ book.title }}
-            </th>
-            <td
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ book.id }}
-            </td>
           </tr>
         </template>
       </tbody>

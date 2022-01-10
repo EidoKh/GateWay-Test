@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\EmptyResource;
 use App\Http\Resources\SingleBookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
@@ -96,9 +97,36 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
-        //
+        Log::info($request->all());
+        $path = public_path() . '/images/books_images/';
+        //code for remove old image
+        if ($request->new_image != 'null' && $request->new_image != 'default.jpg') {
+            $file_old = $path . $request->book_image;
+            unlink($file_old);
+
+            //code for add new image
+            $image = $request->new_image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/books_images/'), $imageName);
+        } else {
+            $imageName = $request->book_image;
+        }
+        $book->update([
+            'book_image' => $imageName,
+            "title" => $request->title,
+            "description" => $request->description,
+            "category_id" => $request->category_id,
+            "author_id" => $request->author_id,
+            "language" => $request->language,
+            "pages" => $request->pages,
+            "number_of_copies" => $request->number_of_copies,
+            "publication_year" => $request->publication_year,
+        ]);
+
+        return new EmptyResource($book);
     }
 
     /**
