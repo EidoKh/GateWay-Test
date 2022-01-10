@@ -163,7 +163,7 @@
                   /></svg
               ></span>
               <router-link
-                :to="{ name: 'books.index', params: { id: book.id } }"
+                :to="{ name: 'books.edit', params: { id: book.id } }"
               >
                 <span class="cursor-pointer"
                   ><svg

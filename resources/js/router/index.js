@@ -8,6 +8,7 @@ import CategoriesEdit from "../components/categories/CategoriesEdit";
 
 import BooksIndex from "../components/books/BooksIndex";
 import BooksCreate from "../components/books/BooksCreate";
+import BooksEdit from "../components/books/BooksEdit";
 
 const routes = [
     {
@@ -41,6 +42,12 @@ const routes = [
         path: "/books/create",
         name: "books.create",
         component: BooksCreate,
+    },
+    {
+        path: "/books/:id/edit",
+        name: "books.edit",
+        component: BooksEdit,
+        props: true,
     },
 
     {

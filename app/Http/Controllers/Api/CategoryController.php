@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -28,7 +29,22 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $category = Category::create($request->validated());
+        // $category = Category::create($request->validated());
+
+        if ($request->hasFile('image')) {
+            Log::info($request->all());
+            $image = $request->image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/categories_images'), $imageName);
+        } else {
+            $imageName = 'default.jpg';
+        }
+        $category = new Category();
+        $category->category_name = $request->category_name;
+        $category->category_image = $imageName;
+
+        $category->save();
 
         return new CategoryResource($category);
     }
@@ -53,9 +69,26 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->validated());
+        Log::info($request->all());
+        $path = public_path() . '/images/categories_images/';
+        if ($request->new_image != 'null' && $request->new_image != 'default.jpg') { //code for remove old image
+            $file_old = $path . $request->category_image;
+            unlink($file_old);
 
-        return new CategoryResource($category);
+            //code for add new image
+            $image = $request->new_image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/categories_images/'), $imageName);
+        } else {
+            $imageName = $request->category_image;
+        }
+        $category->update([
+            'category_name' => $request->category_name,
+            'category_image' => $imageName
+        ]);
+
+        // return new CategoryResource($category);
     }
 
     /**

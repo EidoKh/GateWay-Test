@@ -20,18 +20,44 @@
       </p>
     </div>
   </div>
-  <form
-    class="p-6 flex flex-col justify-center"
-    v-on:submit.prevent="saveCategory"
-  >
-    <div class="flex flex-col">
-      <label for="name" class="hidden">Full Name</label>
+  <div class="w-100 text-right pt-6 px-6">
+    <h3 class="text-xl">إضافة كتاب</h3>
+  </div>
+  <form class="p-6 flex flex-col justify-center" @submit.prevent="saveBook">
+    <div class="flex flex-col text-right">
+      <label for="title" class="">العنوان</label>
       <input
-        type="name"
-        name="name"
-        id="name"
-        placeholder="اسم الفئة"
-        v-model="category.category_name"
+        type="text"
+        name="title"
+        id="title"
+        placeholder="عنوان الكتاب"
+        v-model="book.title"
+        class="
+          w-100
+          mt-2
+          py-3
+          px-3
+          rounded-lg
+          bg-white
+          dark:bg-gray-800
+          border border-gray-400
+          dark:border-gray-700
+          text-gray-800
+          dark:text-gray-50
+          font-semibold
+          focus:border-blue-500 focus:outline-none
+          text-right
+        "
+      />
+    </div>
+    <div class="flex flex-col text-right">
+      <label for="description" class="">الوصف</label>
+      <textarea
+        name="description"
+        id="description"
+        placeholder="اكتب شيئا عن الكتاب"
+        v-model="book.description"
+        rows="6"
         class="
           w-100
           mt-2
@@ -51,6 +77,184 @@
       />
     </div>
 
+    <div class="md:flex w-100 text-right">
+      <div class="md:w-1/2 w-full">
+        <label for="category" class="">الفئة</label>
+        <select
+          name="category"
+          id="category"
+          v-model="book.category_id"
+          class="
+            mt-2
+            py-3
+            w-full
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        >
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+          >
+            {{ category.category_name }}
+          </option>
+        </select>
+      </div>
+      <div class="md:w-1/2 w-full">
+        <label for="author" class="">المؤلف</label>
+        <select
+          name="author"
+          id="author"
+          v-model="book.author_id"
+          class="
+            mt-2
+            w-full
+            py-3
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        >
+          <option v-for="author in authors" :key="author.id" :value="author.id">
+            {{ author.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="md:flex w-100 text-right">
+      <div class="md:w-1/2 w-full">
+        <label for="language" class="">اللغة</label>
+        <select
+          name="language"
+          id="language"
+          v-model="book.language"
+          class="
+            mt-2
+            py-3
+            w-full
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        >
+          <option value="arabic">العربية</option>
+          <option value="english">الانكليزية</option>
+          <option value="kurdish">الكوردية</option>
+        </select>
+      </div>
+      <div class="md:w-1/2 w-full">
+        <label for="pages" class="">عدد الصفحات</label>
+        <input
+          type="number"
+          name="pages"
+          id="pages"
+          v-model="book.pages"
+          class="
+            mt-2
+            w-full
+            py-3
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        />
+      </div>
+    </div>
+    <div class="md:flex w-100 text-right">
+      <div class="md:w-1/2 w-full">
+        <label for="publication_year" class="">سنة النشر</label>
+        <input
+          pattern="^(19|20)\d{2}$"
+          type="number"
+          name="publication_year"
+          id="publication_year"
+          v-model="book.publication_year"
+          class="
+            mt-2
+            w-full
+            py-3
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        />
+      </div>
+      <div class="md:w-1/2 w-full">
+        <label for="number_of_copies" class="">النسخ المتوفرة</label>
+        <input
+          type="number"
+          name="number_of_copies"
+          id="number_of_copies"
+          v-model="book.number_of_copies"
+          class="
+            mt-2
+            w-full
+            py-3
+            px-3
+            rounded-lg
+            bg-white
+            dark:bg-gray-800
+            border border-gray-400
+            dark:border-gray-700
+            text-gray-800
+            dark:text-gray-50
+            font-semibold
+            focus:border-blue-500 focus:outline-none
+            text-right
+          "
+        />
+      </div>
+    </div>
+    <div class="flex w-full justify-end mt-2" v-if="imagePreview">
+      <img
+        :src="imagePreview"
+        alt=""
+        class="figure-img img-fluid rounded"
+        style="max-height: 100px"
+      />
+    </div>
     <div class="flex flex-col mt-2">
       <input
         class="
@@ -70,10 +274,11 @@
           text-right
           hidden
         "
+        @change="onFileSelected"
         type="file"
-        id="category-image"
+        id="book-image"
       />
-      <label for="category-image" class="text-right w-100 flex justify-end"
+      <label for="book-image" class="text-right w-100 flex justify-end"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-12 cursor-pointer"
@@ -115,8 +320,9 @@
   </form>
 </template>
 
+
 <script>
-import useCategories from "../../composables/categories";
+import useBooks from "../../composables/books";
 import { onMounted } from "vue";
 
 export default {
@@ -128,18 +334,18 @@ export default {
   },
 
   setup(props) {
-    const { errors, category, getCategory, updateCategory } = useCategories();
+    const { errors, book, getBook, updateBook } = useBooks();
 
-    onMounted(getCategory(props.id));
+    onMounted(getBook(props.id));
 
-    const saveCategory = async () => {
-      await updateCategory(props.id);
+    const saveBook = async () => {
+      await updateBook(props.id);
     };
 
     return {
       errors,
-      category,
-      saveCategory,
+      book,
+      saveBook,
     };
   },
 };

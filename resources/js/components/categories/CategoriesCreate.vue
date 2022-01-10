@@ -49,6 +49,14 @@
       />
     </div>
 
+    <div class="flex w-full justify-end mt-2" v-if="imagePreview">
+      <img
+        :src="imagePreview"
+        alt=""
+        class="figure-img img-fluid rounded"
+        style="max-height: 100px"
+      />
+    </div>
     <div class="flex flex-col mt-2">
       <input
         class="
@@ -68,10 +76,11 @@
           text-right
           hidden
         "
+        @change="onFileSelected"
         type="file"
-        id="category-image"
+        id="book-image"
       />
-      <label for="category-image" class="text-right w-100 flex justify-end"
+      <label for="book-image" class="text-right w-100 flex justify-end"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-12 cursor-pointer"
@@ -114,7 +123,7 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import useCategories from "../../composables/categories";
 
 export default {
@@ -127,13 +136,27 @@ export default {
     const { errors, storeCategory } = useCategories();
 
     const saveCategory = async () => {
-      await storeCategory({ ...form });
+      await storeCategory({ form: form, file });
     };
+
+    let file = reactive(null);
+    let imagePreview = ref(null);
+    function onFileSelected(event) {
+      file = event.target.files[0];
+      form.category_image = event.target.files[0].name;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        imagePreview.value = event.target.result;
+      };
+    }
 
     return {
       form,
       errors,
       saveCategory,
+      imagePreview,
+      onFileSelected,
     };
   },
 };

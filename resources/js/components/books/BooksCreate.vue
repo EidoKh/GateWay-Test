@@ -20,7 +20,6 @@
       </p>
     </div>
   </div>
-  {{ form }}
   <div class="w-100 text-right pt-6 px-6">
     <h3 class="text-xl">إضافة كتاب</h3>
   </div>
@@ -102,9 +101,13 @@
             text-right
           "
         >
-          <option selected value="1">خرف ا</option>
-          <option value="2">خرف ب</option>
-          <option value="3">خرف ت</option>
+          <option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category.id"
+          >
+            {{ category.category_name }}
+          </option>
         </select>
       </div>
       <div class="md:w-1/2 w-full">
@@ -130,9 +133,9 @@
             text-right
           "
         >
-          <option selected value="1">خرف ا</option>
-          <option value="2">خرف ب</option>
-          <option value="3">خرف ت</option>
+          <option v-for="author in authors" :key="author.id" :value="author.id">
+            {{ author.name }}
+          </option>
         </select>
       </div>
     </div>
@@ -244,6 +247,14 @@
         />
       </div>
     </div>
+    <div class="flex w-full justify-end mt-2" v-if="imagePreview">
+      <img
+        :src="imagePreview"
+        alt=""
+        class="figure-img img-fluid rounded"
+        style="max-height: 100px"
+      />
+    </div>
     <div class="flex flex-col mt-2">
       <input
         class="
@@ -263,6 +274,7 @@
           text-right
           hidden
         "
+        @change="onFileSelected"
         type="file"
         id="book-image"
       />
@@ -282,6 +294,7 @@
           /></svg
       ></label>
     </div>
+
     <button
       type="submit"
       class="
@@ -308,11 +321,14 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import useBooks from "../../composables/books";
+import useLookups from "../../composables/lookups";
 
 export default {
   setup() {
+    const { errors, storeBook } = useBooks();
+    const { categories, authors, getCategories, getAuthors } = useLookups();
     const form = reactive({
       title: "",
       description: "",
@@ -323,19 +339,36 @@ export default {
       number_of_copies: null,
       publication_year: null,
       book_image: "default.jpg",
-      book_thumbnail: "default.jpg",
+    });
+    onMounted(() => {
+      getCategories();
+      getAuthors();
     });
 
-    const { errors, storeBook } = useBooks();
+    let file = reactive(null);
+    let imagePreview = ref(null);
+    function onFileSelected(event) {
+      file = event.target.files[0];
+      form.book_image = event.target.files[0].name;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        imagePreview.value = event.target.result;
+      };
+    }
 
     const saveBook = async () => {
-      await storeBook({ ...form });
+      await storeBook({ form: form, file });
     };
 
     return {
       form,
       errors,
       saveBook,
+      onFileSelected,
+      imagePreview,
+      categories,
+      authors,
     };
   },
 };

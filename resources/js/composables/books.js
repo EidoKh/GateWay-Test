@@ -17,11 +17,21 @@ export default function useBooks() {
         let response = await axios.get("/api/books/" + id);
         book.value = response.data.data;
     };
-
+    let fd = new FormData();
     const storeBook = async (data) => {
+        fd.append("image", data.file);
+        fd.append("title", data.form.title);
+        fd.append("description", data.form.description);
+        fd.append("category_id", data.form.category_id);
+        fd.append("author_id", data.form.author_id);
+        fd.append("language", data.form.language);
+        fd.append("pages", data.form.pages);
+        fd.append("number_of_copies", data.form.number_of_copies);
+        fd.append("publication_year", data.form.publication_year);
+        fd.append("book_image", data.form.book_image);
         errors.value = "";
         try {
-            await axios.post("/api/books", data);
+            await axios.post("/api/books", fd);
             await router.push({ name: "books.index" });
         } catch (e) {
             if (e.response.status === 422) {

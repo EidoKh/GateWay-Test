@@ -51,6 +51,22 @@
       />
     </div>
 
+    <div
+      v-if="category.category_image != undefined"
+      class="flex w-full justify-end mt-2"
+    >
+      <img
+        :src="
+          imagePreview != null
+            ? imagePreview
+            : 'http://127.0.0.1:8000/images/categories_images/' +
+              category.category_image
+        "
+        alt=""
+        class="figure-img img-fluid rounded"
+        style="max-height: 200px"
+      />
+    </div>
     <div class="flex flex-col mt-2">
       <input
         class="
@@ -70,10 +86,11 @@
           text-right
           hidden
         "
+        @change="onFileSelected"
         type="file"
-        id="category-image"
+        id="book-image"
       />
-      <label for="category-image" class="text-right w-100 flex justify-end"
+      <label for="book-image" class="text-right w-100 flex justify-end"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-12 cursor-pointer"
@@ -117,7 +134,7 @@
 
 <script>
 import useCategories from "../../composables/categories";
-import { onMounted } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
 export default {
   props: {
@@ -133,13 +150,29 @@ export default {
     onMounted(getCategory(props.id));
 
     const saveCategory = async () => {
-      await updateCategory(props.id);
+      await updateCategory(props.id, { form: category.value, file });
     };
+    let file = reactive(null);
+    let imagePreview = ref(null);
+    let isImageChanged = ref(false);
+
+    function onFileSelected(event) {
+      file = event.target.files[0];
+
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        isImageChanged.value = true;
+        imagePreview.value = event.target.result;
+      };
+    }
 
     return {
       errors,
       category,
       saveCategory,
+      onFileSelected,
+      imagePreview,
     };
   },
 };
