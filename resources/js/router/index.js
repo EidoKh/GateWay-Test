@@ -10,12 +10,23 @@ import BooksIndex from "../components/books/BooksIndex";
 import BooksCreate from "../components/books/BooksCreate";
 import BooksEdit from "../components/books/BooksEdit";
 
+import AuthorsIndex from "../components/authors/AuthorsIndex";
+import AuthorsCreate from "../components/authors/AuthorsCreate";
+import AuthorsEdit from "../components/authors/AuthorsEdit";
+
 const routes = [
     {
         path: "/dashboard",
         name: "dashboard",
         component: Dashboard,
     },
+    {
+        //test route
+        path: "/categories/test",
+        name: "categories.test",
+        component: Test,
+    },
+    //categories routes
     {
         path: "/categories",
         name: "categories.index",
@@ -33,6 +44,7 @@ const routes = [
         props: true,
     },
 
+    //books routes
     {
         path: "/books",
         name: "books.index",
@@ -50,10 +62,22 @@ const routes = [
         props: true,
     },
 
+    //books routes
     {
-        path: "/categories/test",
-        name: "categories.test",
-        component: Test,
+        path: "/authors",
+        name: "authors.index",
+        component: AuthorsIndex,
+    },
+    {
+        path: "/authors/create",
+        name: "authors.create",
+        component: AuthorsCreate,
+    },
+    {
+        path: "/authors/:id/edit",
+        name: "authors.edit",
+        component: AuthorsEdit,
+        props: true,
     },
 ];
 

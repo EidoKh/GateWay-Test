@@ -196,7 +196,7 @@
             </li>
             <li>
               <router-link
-                :to="{ name: 'books.index' }"
+                :to="{ name: 'authors.index' }"
                 class="
                   relative
                   flex flex-row

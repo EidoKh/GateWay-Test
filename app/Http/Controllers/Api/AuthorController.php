@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthorController extends Controller
 {
@@ -26,7 +27,6 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -37,7 +37,21 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->hasFile('image')) {
+            Log::info($request->all());
+            $image = $request->image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/authors_images'), $imageName);
+        } else {
+            $imageName = 'default.jpg';
+        }
+        $author = new Author();
+        $author->author_name = $request->author_name;
+        $author->author_about = $request->about_author;
+        $author->author_image = $imageName;
+        $author->save();
+        return response()->noContent();
     }
 
     /**
