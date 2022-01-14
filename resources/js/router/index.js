@@ -14,6 +14,8 @@ import AuthorsIndex from "../components/authors/AuthorsIndex";
 import AuthorsCreate from "../components/authors/AuthorsCreate";
 import AuthorsEdit from "../components/authors/AuthorsEdit";
 
+import UsersIndex from "../components/users/UsersIndex";
+
 const routes = [
     {
         path: "/dashboard",
@@ -78,6 +80,12 @@ const routes = [
         name: "authors.edit",
         component: AuthorsEdit,
         props: true,
+    },
+    //Users Routes
+    {
+        path: "/users",
+        name: "users.index",
+        component: UsersIndex,
     },
 ];
 
