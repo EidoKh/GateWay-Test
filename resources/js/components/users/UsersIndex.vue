@@ -1,91 +1,68 @@
 <template>
-  <button @click="getSelectedRows()">Get Selected Rows</button>
-  <ag-grid-vue
-    style="width: 100%; height: 500px"
-    class="ag-theme-alpine"
-    :columnDefs="columnDefs"
-    :rowData="users"
-    rowSelection="multiple"
-    @grid-ready="onGridReady"
-  >
-  </ag-grid-vue>
+  <div class="block w-full overflow-x-auto">
+    <div class="mx-2 flex justify-between place-content-end mb-4">
+      <div>
+        <h3 class="text-xl">كل المستخدمين</h3>
+      </div>
+      <div
+        class="
+          px-4
+          py-2
+          text-white
+          bg-indigo-600
+          hover:bg-indigo-700
+          cursor-pointer
+          rounded-lg
+        "
+      >
+        <router-link :to="{ name: 'users.create' }" class="text-sm font-medium"
+          >إضافة مستخدم</router-link
+        >
+      </div>
+    </div>
+    <index-table
+      :columns="columns"
+      :rows="users"
+      @delete="DeleteRow($event)"
+      @edit="EditRow($event)"
+    ></index-table>
+  </div>
   {{ users }}
 </template>
 
 <script>
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { AgGridVue } from "ag-grid-vue3";
 import { reactive, ref } from "@vue/reactivity";
-import { onBeforeMount, onMounted } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
 import useUsers from "../../composables/users";
-import btnCellRenderer from "./btn-cell-renderer.vue";
+import IndexTable from "../tables/IndexTable";
 
 export default {
-  name: "App",
   components: {
-    AgGridVue,
-    btnCellRenderer,
+    IndexTable,
   },
   setup() {
     const { getUsers, users } = useUsers();
-    let columnData = reactive([]);
+    const columns = reactive([
+      {
+        label: "الأسم",
+        column: "name",
+      },
+      {
+        label: "ايميل",
+        column: "email",
+      },
+    ]);
     onMounted(() => {
       getUsers();
     });
-
-    const columnDefs = reactive([
-      {
-        field: "athlete",
-        cellRenderer: "btnCellRenderer",
-        cellRendererParams: {
-          //   clicked: function (field) {
-          //     alert(`${field} was clicked`);
-          //   },
-        },
-      },
-      {
-        headerName: "الأسم",
-        field: "name",
-        sortable: true,
-        filter: true,
-        checkboxSelection: true,
-      },
-      {
-        headerName: "البريد",
-        field: "email",
-        sortable: true,
-        filter: true,
-      },
-      {
-        headerName: "نوع المستخدم",
-        field: "user_type",
-        sortable: true,
-        filter: true,
-      },
-    ]);
-    let gridApi = ref(null);
-    let columnApi = ref(null);
-
-    const onGridReady = (params) => {
-      gridApi = params.api;
-      columnApi = params.columnApi;
-    };
-
-    const getSelectedRows = () => {
-      const selectedNodes = gridApi.getSelectedNodes();
-      const selectedData = selectedNodes.map((node) => node.data);
-      const selectedDataStringPresentation = selectedData
-        .map((node) => `${node.make} ${node.model}`)
-        .join(", ");
-      alert(`Selected nodes: ${selectedDataStringPresentation}`);
+    const DeleteRow = (id) => {
+      console.log(id);
     };
 
     return {
-      columnDefs,
-      onGridReady,
-      getSelectedRows,
       users,
+      columns,
+      DeleteRow,
     };
   },
 };

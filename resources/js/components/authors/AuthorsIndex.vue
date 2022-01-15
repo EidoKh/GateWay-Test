@@ -22,177 +22,49 @@
         >
       </div>
     </div>
-
-    <table class="items-center w-full bg-transparent border-collapse">
-      <thead>
-        <tr>
-          <th
-            class="
-              px-4
-              bg-gray-100
-              dark:bg-gray-600
-              text-gray-500
-              dark:text-gray-100
-              align-middle
-              border border-solid border-gray-200
-              dark:border-gray-500
-              py-3
-              text-xs
-              uppercase
-              border-l-0 border-r-0
-              whitespace-nowrap
-              font-semibold
-              text-right
-              min-w-140-px
-            "
-          >
-            ت
-          </th>
-          <th
-            class="
-              px-4
-              bg-gray-100
-              dark:bg-gray-600
-              text-gray-500
-              dark:text-gray-100
-              align-middle
-              border border-solid border-gray-200
-              dark:border-gray-500
-              py-3
-              text-xs
-              uppercase
-              border-l-0 border-r-0
-              whitespace-nowrap
-              font-semibold
-              text-right
-            "
-          >
-            الأسم
-          </th>
-          <th
-            class="
-              px-4
-              bg-gray-100
-              dark:bg-gray-600
-              text-gray-500
-              dark:text-gray-100
-              align-middle
-              border border-solid border-gray-200
-              dark:border-gray-500
-              py-3
-              text-xs
-              uppercase
-              border-l-0 border-r-0
-              whitespace-nowrap
-              font-semibold
-              text-right
-            "
-          >
-            عمليات
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="author in authors" :key="author.id">
-          <tr class="text-gray-700 dark:text-gray-100">
-            <td
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ author.id }}
-            </td>
-            <th
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-              "
-            >
-              {{ author.name }}
-            </th>
-            <th
-              class="
-                border-t-0
-                px-4
-                align-middle
-                border-l-0 border-r-0
-                text-xs
-                whitespace-nowrap
-                p-4
-                text-right
-                flex
-              "
-            >
-              <span class="cursor-pointer" @click="deleteAuthor(author.id)"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="w-5 text-red-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  /></svg
-              ></span>
-              <router-link
-                :to="{ name: 'authors.edit', params: { id: author.id } }"
-              >
-                <span class="cursor-pointer"
-                  ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 text-indigo-300"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    /></svg></span
-              ></router-link>
-            </th>
-          </tr>
-        </template>
-      </tbody>
-    </table>
+    <index-table
+      :columns="columns"
+      :rows="authors"
+      @delete="deleteRow($event)"
+      @edit="editRow($event)"
+    ></index-table>
   </div>
 </template>
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, reactive } from "@vue/runtime-core";
 import useAuthors from "../../composables/authors";
+import IndexTable from "../tables/IndexTable";
 export default {
+  components: { IndexTable },
   setup() {
-    const { authors, getAuthors, destroyAuthor } = useAuthors();
+    const { authors, getAuthors, destroyAuthor, editAuthor } = useAuthors();
+    const columns = reactive([
+      {
+        label: "الأسم",
+        column: "name",
+      },
+    ]);
     onMounted(() => {
       getAuthors();
     });
 
-    const deleteAuthor = (id) => {
-      destroyAuthor(id);
+    const deleteRow = async (id) => {
+      if (!window.confirm("Are you sure?")) {
+        return;
+      }
+
+      await destroyAuthor(id);
+      await getAuthors();
+    };
+    const editRow = (id) => {
+      editAuthor(id);
     };
 
     return {
       authors,
-      deleteAuthor,
+      columns,
+      deleteRow,
+      editRow,
     };
   },
 };

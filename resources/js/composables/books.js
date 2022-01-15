@@ -71,6 +71,9 @@ export default function useBooks() {
     const destroyBook = async (id) => {
         await axios.delete("/api/books/" + id);
     };
+    const editBook = (id) => {
+        router.push({ name: "books.edit", params: { id: id } });
+    };
 
     return {
         books,
@@ -81,5 +84,6 @@ export default function useBooks() {
         storeBook,
         updateBook,
         destroyBook,
+        editBook,
     };
 }

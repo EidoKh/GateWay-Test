@@ -1,6 +1,6 @@
 <template>
   <div class="w-100 text-right pt-6 px-6">
-    <h3 class="text-xl">إضافة كتاب</h3>
+    <h3 class="text-xl">تعديل كتاب</h3>
   </div>
   <form class="p-6 flex flex-col justify-center" @submit.prevent="saveAuthor()">
     <div class="flex flex-col text-right">
@@ -33,8 +33,8 @@
       <textarea
         name="description"
         id="description"
+        v-model="author.author_about"
         rows="6"
-        v-model="author.about_author"
         class="
           w-100
           mt-2
@@ -52,6 +52,61 @@
           text-right
         "
       />
+    </div>
+    <div
+      class="flex w-full justify-end mt-2"
+      v-if="author.author_image != undefined"
+    >
+      <img
+        :src="
+          imagePreview != null
+            ? imagePreview
+            : URL + 'images/authors_images/' + author.author_image
+        "
+        alt=""
+        class="figure-img img-fluid rounded"
+        style="max-height: 100px"
+      />
+    </div>
+
+    <div class="flex flex-col mt-2">
+      <input
+        class="
+          w-100
+          mt-2
+          py-3
+          px-3
+          rounded-lg
+          bg-white
+          dark:bg-gray-800
+          border border-gray-400
+          dark:border-gray-700
+          text-gray-800
+          dark:text-gray-50
+          font-semibold
+          focus:border-blue-500 focus:outline-none
+          text-right
+          hidden
+        "
+        @change="onFileSelected"
+        type="file"
+        id="book-image"
+      />
+      <label for="book-image" class="text-right w-100 flex justify-end"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-12 cursor-pointer"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          /></svg
+      ></label>
     </div>
 
     <button
@@ -77,23 +132,45 @@
       حفظ
     </button>
   </form>
+
+  {{ author }}
 </template>
 <script>
-// import { onMounted } from "@vue/runtime-core";
-// import useAuthors from "../../composables/authors";
-// export default {
-//   props: {
-//     id,
-//   },
-//   setup(props) {
-//     const { getAuthor, author } = useAuthors();
+import { onMounted, reactive, ref } from "@vue/runtime-core";
+import useAuthors from "../../composables/authors";
+import useLookups from "../../composables/lookups";
+export default {
+  props: {
+    id: {
+      required: true,
+      type: String,
+    },
+  },
+  setup(props) {
+    const { getAuthor, author, updateAuthor } = useAuthors();
+    const { URL } = useLookups();
 
-//     onMounted(() => {
-//       getAuthor(props.id);
-//     });
-//     const saveAuthor = () => {};
+    onMounted(async () => {
+      await getAuthor(props.id);
+      author.value.new_image = null;
+    });
+    const saveAuthor = () => {
+      updateAuthor(props.id, { form: author.value, file });
+    };
+    let file = reactive(null);
+    let imagePreview = ref(null);
 
-//     return { author };
-//   },
-// };
+    function onFileSelected(event) {
+      file = event.target.files[0];
+
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        imagePreview.value = event.target.result;
+      };
+    }
+
+    return { author, onFileSelected, imagePreview, saveAuthor, URL };
+  },
+};
 </script>

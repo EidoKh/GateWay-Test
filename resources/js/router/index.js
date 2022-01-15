@@ -15,6 +15,8 @@ import AuthorsCreate from "../components/authors/AuthorsCreate";
 import AuthorsEdit from "../components/authors/AuthorsEdit";
 
 import UsersIndex from "../components/users/UsersIndex";
+import UsersCreate from "../components/users/UsersCreate";
+import UsersEdit from "../components/users/UsersEdit";
 
 const routes = [
     {
@@ -86,6 +88,17 @@ const routes = [
         path: "/users",
         name: "users.index",
         component: UsersIndex,
+    },
+    {
+        path: "/users/create",
+        name: "users.create",
+        component: UsersCreate,
+    },
+    {
+        path: "/users/:id/edit",
+        name: "users.edit",
+        component: UsersEdit,
+        props: true,
     },
 ];
 

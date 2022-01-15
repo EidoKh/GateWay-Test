@@ -34,6 +34,9 @@ export default function useCategories() {
             }
         }
     };
+    const editCategory = (id) => {
+        router.push({ name: "categories.edit", params: { id: id } });
+    };
 
     const updateCategory = async (id, data) => {
         fd.append("_method", "patch");
@@ -68,5 +71,6 @@ export default function useCategories() {
         storeCategory,
         updateCategory,
         destroyCategory,
+        editCategory,
     };
 }

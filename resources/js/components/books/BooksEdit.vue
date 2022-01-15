@@ -326,7 +326,6 @@
       حفظ
     </button>
   </form>
-  {{ book }}
 </template>
 
 

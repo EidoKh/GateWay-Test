@@ -411,7 +411,6 @@
           </p>
         </div>
       </div>
-
       <!-- ./Sidebar -->
       <div class="h-full mr-14 mt-16 mb-10 md:mr-64">
         <router-view />
@@ -429,7 +428,9 @@ export default {
   },
   setup() {
     let isDark = ref(getTheme());
-    onMounted(() => {});
+    onMounted(() => {
+      isDark.value = true;
+    });
     function getTheme() {
       if (window.localStorage.getItem("dark")) {
         return JSON.parse(window.localStorage.getItem("dark"));
@@ -445,33 +446,6 @@ export default {
     }
     function toggleTheme() {
       isDark.value = !isDark.value;
-      if (isDark.value) {
-        for (
-          let i = 0;
-          i < document.getElementsByClassName("ag-cell-value").length;
-          i++
-        ) {
-          document
-            .getElementsByClassName("ag-cell-value")
-            [i].classList.remove("light-cell");
-          document
-            .getElementsByClassName("ag-cell-value")
-            [i].classList.add("dark-cell");
-        }
-      } else {
-        for (
-          let i = 0;
-          i < document.getElementsByClassName("ag-cell-value").length;
-          i++
-        ) {
-          document
-            .getElementsByClassName("ag-cell-value")
-            [i].classList.remove("dark-cell");
-          document
-            .getElementsByClassName("ag-cell-value")
-            [i].classList.add("light-cell");
-        }
-      }
       setTheme(isDark.value);
     }
     return {
@@ -484,12 +458,6 @@ export default {
 };
 </script>
 <style>
-.dark-cell {
-  color: white !important;
-}
-.light-cell {
-  color: black !important;
-}
 /* Compiled dark classes from Tailwind */
 .dark .dark\:divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
   border-color: rgba(55, 65, 81);
@@ -618,8 +586,5 @@ export default {
 }
 .ag-center-cols-container {
   width: 100% !important;
-}
-.ag-cell-value {
-  color: black;
 }
 </style>

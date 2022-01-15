@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\EmptyResource;
 use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -60,9 +61,9 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Author $author)
     {
-        //
+        return new EmptyResource($author);
     }
 
     /**
@@ -83,9 +84,29 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Author $author)
     {
-        //
+        $path = public_path() . '/images/authors_images/';
+        if ($request->new_image != 'null' && $request->new_image != 'default.jpg') {
+            //code for remove old image
+            $file_old = $path . $request->author_image;
+            unlink($file_old);
+
+            //code for add new image
+            $image = $request->new_image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/authors_images/'), $imageName);
+        } else {
+            $imageName = $request->author_image;
+        }
+        $author->update([
+            'author_name' => $request->author_name,
+            'author_about' => $request->author_about,
+            'author_image' => $imageName
+        ]);
+
+        return new EmptyResource($author);
     }
 
     /**
