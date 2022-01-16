@@ -17,18 +17,18 @@ export default function useUsers() {
         let response = await axios.get("/api/users/" + id);
         user.value = response.data.data;
     };
-    let fd = new FormData();
     const storeUser = async (data) => {
+        let fd = new FormData();
         fd.append("image", data.file);
-        fd.append("title", data.form.title);
-        fd.append("description", data.form.description);
-        fd.append("category_id", data.form.category_id);
-        fd.append("author_id", data.form.author_id);
-        fd.append("language", data.form.language);
-        fd.append("pages", data.form.pages);
-        fd.append("number_of_copies", data.form.number_of_copies);
-        fd.append("publication_year", data.form.publication_year);
+        fd.append("name", data.form.name);
+        fd.append("email", data.form.email);
+        fd.append("password", data.form.password);
+        fd.append("phone", data.form.phone);
+        fd.append("status", data.form.status);
+        fd.append("location", data.form.location);
+        fd.append("user_type", data.form.user_type);
         fd.append("user_image", data.form.user_image);
+
         errors.value = "";
         try {
             await axios.post("/api/users", fd);

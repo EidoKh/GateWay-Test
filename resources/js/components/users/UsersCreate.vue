@@ -23,6 +23,7 @@
   <div class="w-100 text-right pt-6 px-6">
     <h3 class="text-xl">إضافة كتاب</h3>
   </div>
+  {{ form }}
   <form class="p-6 flex flex-col justify-center" @submit.prevent="saveUser">
     <div class="flex flex-col text-right">
       <label for="title" class="">الأسم</label>
@@ -30,7 +31,6 @@
         type="text"
         name="name"
         id="name"
-        placeholder="عنوان الكتاب"
         v-model="form.name"
         class="
           w-100
@@ -56,6 +56,7 @@
         type="email"
         name="email"
         id="email"
+        required
         v-model="form.email"
         class="
           w-100
@@ -81,6 +82,7 @@
         type="password"
         name="password"
         id="password"
+        autocomplete="new-password"
         v-model="form.password"
         class="
           w-100
