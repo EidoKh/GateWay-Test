@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LoanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,5 @@ Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::c
 Route::apiResource('books', \App\Http\Controllers\Api\BookController::class);
 Route::apiResource('authors', \App\Http\Controllers\Api\AuthorController::class);
 Route::apiResource('users', \App\Http\Controllers\Api\UserController::class);
+Route::apiResource('loans', \App\Http\Controllers\Api\LoanController::class);
+Route::get('user-loans/{id}',  [LoanController::class, 'userLoans']);

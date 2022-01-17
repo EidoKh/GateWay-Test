@@ -25,12 +25,6 @@ const routes = [
         name: "dashboard",
         component: Dashboard,
     },
-    {
-        //test route
-        path: "/categories/test",
-        name: "categories.test",
-        component: Test,
-    },
     //categories routes
     {
         path: "/categories",
@@ -106,6 +100,12 @@ const routes = [
         name: "users.view",
         component: UsersView,
         props: true,
+    },
+    //((((((((((((((((((((((((((((((((((((((((((((Test Route))))))))))))))))))))))))))))))))))))))))))))
+    {
+        path: "/tests",
+        name: "tests.index",
+        component: Test,
     },
 ];
 
