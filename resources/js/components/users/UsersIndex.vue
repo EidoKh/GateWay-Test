@@ -23,11 +23,11 @@
     <index-table
       :columns="columns"
       :rows="users"
-      @delete="DeleteRow($event)"
-      @edit="EditRow($event)"
+      @delete="deleteRow($event)"
+      @edit="editRow($event)"
+      @view="viewRow($event)"
     ></index-table>
   </div>
-  {{ users }}
 </template>
 
 <script>
@@ -41,7 +41,7 @@ export default {
     IndexTable,
   },
   setup() {
-    const { getUsers, users } = useUsers();
+    const { getUsers, users, destroyUser, editUser, viewUser } = useUsers();
     const columns = reactive([
       {
         label: "الأسم",
@@ -55,14 +55,27 @@ export default {
     onMounted(() => {
       getUsers();
     });
-    const DeleteRow = (id) => {
-      console.log(id);
+    const deleteRow = async (id) => {
+      if (!window.confirm("Are you sure?")) {
+        return;
+      }
+
+      await destroyUser(id);
+      await getUsers();
+    };
+    const editRow = (id) => {
+      editUser(id);
+    };
+    const viewRow = (id) => {
+      viewUser(id);
     };
 
     return {
       users,
       columns,
-      DeleteRow,
+      deleteRow,
+      editRow,
+      viewRow,
     };
   },
 };

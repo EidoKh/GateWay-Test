@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EmptyResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -18,6 +20,7 @@ class UserController extends Controller
     public function index()
     {
         return EmptyResource::collection(User::all());
+        // return EmptyResource::collection(User::all()->where("user_type", 's'));
     }
 
     /**
@@ -38,7 +41,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request);
+        Log::info($request->all());
+        if ($request->hasFile('image')) {
+            $image = $request->image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/users_images'), $imageName);
+        } else {
+            $imageName = 'default.jpg';
+        }
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'status' => $request->status,
+            'location' => $request->location,
+            'user_type' => $request->user_type,
+            'added_at' => $request->added_at,
+            'user_image' => $imageName,
+        ]);
+        return response()->noContent();
     }
 
     /**
@@ -47,9 +71,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return new EmptyResource($user);
     }
 
     /**
@@ -70,9 +94,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+
+        $path = public_path() . '/images/users_images/';
+        //code for remove old image
+        if ($request->new_image != 'null' && $request->new_image != 'default.jpg') {
+            $file_old = $path . $request->user_image;
+            if ($request->user_image != 'default.jpg')
+                unlink($file_old);
+
+            //code for add new image
+            $image = $request->new_image;
+            $imageName = $image->getClientOriginalName();
+            $imageName = time() . '_' . $imageName;
+            $image->move(public_path('/images/users_images/'), $imageName);
+        } else {
+            $imageName = $request->user_image;
+        }
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'phone' => $request->phone,
+            'status' => $request->status,
+            'location' => $request->location,
+            'user_type' => $request->user_type,
+            'user_image' => $imageName,
+            'update_at' => Carbon::now()
+        ]);
+
+        return new EmptyResource($user);
     }
 
     /**
@@ -81,8 +133,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return response()->noContent();
     }
 }

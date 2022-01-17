@@ -1,29 +1,7 @@
 <template>
-  <div v-if="errors">
-    <div
-      v-for="(v, k) in errors"
-      :key="k"
-      class="
-        bg-red-500
-        text-white
-        rounded
-        font-bold
-        mb-4
-        shadow-lg
-        py-2
-        px-4
-        pr-0
-      "
-    >
-      <p v-for="error in v" :key="error" class="text-sm">
-        {{ error }}
-      </p>
-    </div>
-  </div>
   <div class="w-100 text-right pt-6 px-6">
-    <h3 class="text-xl">إضافة كتاب</h3>
+    <h3 class="text-xl">إضافة مستخدم</h3>
   </div>
-  {{ form }}
   <form class="p-6 flex flex-col justify-center" @submit.prevent="saveUser">
     <div class="flex flex-col text-right">
       <label for="title" class="">الأسم</label>
@@ -53,6 +31,8 @@
     <div class="flex flex-col text-right">
       <label for="email" class="">البريد الالكتروني</label>
       <input
+        lang="en"
+        dir="ltr"
         type="email"
         name="email"
         id="email"
@@ -105,6 +85,8 @@
     <div class="flex flex-col text-right">
       <label for="phone" class="">الهاتف</label>
       <input
+        lang="en"
+        dir="ltr"
         type="tel"
         name="phone"
         id="phone"
@@ -289,8 +271,9 @@ import useLookups from "../../composables/lookups";
 
 export default {
   setup() {
-    const { errors, storeUser } = useUsers();
+    const { storeUser } = useUsers();
     const { categories, authors, getCategories, getAuthors } = useLookups();
+    let today = ref(new Date().toISOString().slice(0, 10));
     const form = reactive({
       name: "",
       email: "",
@@ -299,10 +282,13 @@ export default {
       status: "",
       location: "",
       user_type: "",
+      user_image: "",
+      added_at: today.value,
     });
     onMounted(() => {
       getCategories();
       getAuthors();
+      console.log(form.added_at);
     });
 
     let file = reactive(null);
@@ -323,7 +309,6 @@ export default {
 
     return {
       form,
-      errors,
       saveUser,
       onFileSelected,
       imagePreview,

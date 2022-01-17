@@ -25,6 +25,7 @@ class User extends Authenticatable
         'status',
         'location',
         'user_type',
+        'user_image', 'added_at'
     ];
 
 

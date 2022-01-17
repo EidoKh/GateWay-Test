@@ -428,9 +428,6 @@ export default {
   },
   setup() {
     let isDark = ref(getTheme());
-    onMounted(() => {
-      isDark.value = true;
-    });
     function getTheme() {
       if (window.localStorage.getItem("dark")) {
         return JSON.parse(window.localStorage.getItem("dark"));
