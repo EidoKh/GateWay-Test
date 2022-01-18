@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+
+    function login(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        // print_r($data);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => ['These credentials do not match our records.']
+            ], 404);
+        }
+
+        $token = $user->createToken('my-app-token')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        return response($response, 201);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -101,7 +122,7 @@ class UserController extends Controller
         //code for remove old image
         if ($request->new_image != 'null' && $request->new_image != 'default.jpg') {
             $file_old = $path . $request->user_image;
-            if ($request->user_image != 'default.jpg')
+            if ($request->user_image != 'default.jpg' && $request->user_image != null)
                 unlink($file_old);
 
             //code for add new image

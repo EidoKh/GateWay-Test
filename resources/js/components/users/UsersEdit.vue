@@ -187,6 +187,7 @@
         </select>
       </div>
     </div>
+    {{ imagePreview }}
     <div>
       <div
         class="flex w-full justify-end mt-2"

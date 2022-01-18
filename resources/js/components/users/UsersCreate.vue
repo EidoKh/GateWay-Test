@@ -288,7 +288,6 @@ export default {
     onMounted(() => {
       getCategories();
       getAuthors();
-      console.log(form.added_at);
     });
 
     let file = reactive(null);

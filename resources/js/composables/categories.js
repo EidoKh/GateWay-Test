@@ -23,7 +23,6 @@ export default function useCategories() {
         fd.append("image", data.file);
         fd.append("category_name", data.form.category_name);
         fd.append("category_image", data.form.category_image);
-        console.log(data);
         errors.value = "";
         try {
             await axios.post("/api/categories", fd);

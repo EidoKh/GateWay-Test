@@ -43,8 +43,9 @@
           />
         </svg>
       </span>
-      <span class="tracking-wide">Fines</span>
+      <span class="tracking-wide">الغرامات</span>
     </div>
+    {{ fines }}
     <div class="text-gray-700 dark:text-gray-100">
       <index-table
         :columns="columns"
@@ -53,87 +54,56 @@
         @edit="editRow($event)"
         @view="viewRow($event)"
       ></index-table>
-
-      <!-- <div class="grid md:grid-cols-2 text-sm">
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">First Name</div>
-          <div class="px-4 py-2">Jane</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Last Name</div>
-          <div class="px-4 py-2">Doe</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Gender</div>
-          <div class="px-4 py-2">Female</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Contact No.</div>
-          <div class="px-4 py-2">+11 998001001</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Current Address</div>
-          <div class="px-4 py-2">Beech Creek, PA, Pennsylvania</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Permanant Address</div>
-          <div class="px-4 py-2">Arlington Heights, IL, Illinois</div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Email.</div>
-          <div class="px-4 py-2">
-            <a class="text-blue-800" href="mailto:jane@example.com"
-              >jane@example.com</a
-            >
-          </div>
-        </div>
-        <div class="grid grid-cols-2">
-          <div class="px-4 py-2 font-semibold">Birthday</div>
-          <div class="px-4 py-2">Feb 06, 1998</div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
 <script>
 import { reactive } from "@vue/reactivity";
 import IndexTable from "../tables/IndexTable";
+import { onMounted } from "@vue/runtime-core";
+import useFines from "../../composables/fines";
 
 export default {
   components: {
     IndexTable,
   },
-  setup() {
-    let fines = reactive([
-      {
-        id: 1,
-        fine_date: "1-1-2020",
-        fine_amount: "7000",
-      },
-      {
-        id: 2,
-        fine_date: "2-2-2020",
-        fine_amount: "6500",
-      },
-    ]);
+  props: {
+    fines: Array,
+    user_id: String,
+  },
+  setup(props) {
+    const { getFines, destroyFine } = useFines();
     const columns = reactive([
       {
-        label: "تاريخ الشراء",
-        column: "fine_date",
+        label: "تأريخ القرض",
+        column: "loan_date",
       },
       {
-        label: "المبلغ",
+        label: "قيمة الغرامة",
         column: "fine_amount",
       },
+      {
+        label: "تأريخ الغرامة",
+        column: "fine_date",
+      },
     ]);
+    onMounted(async () => {});
 
     const editRow = (id) => {};
     const viewRow = (id) => {};
+    const deleteRow = async (id) => {
+      if (!window.confirm("Are you sure?")) {
+        return;
+      }
+
+      await destroyFine(id);
+      await getFines(props.user_id);
+    };
     return {
-      fines,
       columns,
       editRow,
       viewRow,
+      deleteRow,
     };
   },
 };

@@ -166,21 +166,27 @@
               </li>
             </ul>
           </div>
-          <fines v-show="activeTab == 'fines'"></fines>
+          <fines
+            :user_id="id"
+            :fines="fines"
+            v-show="activeTab == 'fines'"
+          ></fines>
           <loans :loans="loans" v-show="activeTab == 'loans'"></loans>
           <fine-payment v-show="activeTab == 'fine_payment'"></fine-payment>
         </div>
       </div>
     </div>
   </div>
+  {{ fines }}
 </template>
 <script>
 import useUsers from "../../composables/users";
 import useLookups from "../../composables/lookups";
 import useLoans from "../../composables/loans";
+import useFines from "../../composables/fines";
 import Fines from "../fines/Fines.vue";
 import FinePayment from "../fines/FinePayment.vue";
-import Loans from "../fines/Loans.vue";
+import Loans from "../loans/Loans.vue";
 import { onMounted, reactive, ref } from "vue";
 
 export default {
@@ -199,18 +205,21 @@ export default {
   setup(props) {
     const { user, getUser } = useUsers();
     const { getLoans, loans } = useLoans();
+    const { getFines, fines } = useFines();
     const { URL } = useLookups();
     let activeTab = ref("fines");
 
     onMounted(async () => {
       await getUser(props.id);
       await getLoans(props.id);
+      await getFines(props.id);
     });
     return {
       user,
       URL,
       activeTab,
       loans,
+      fines,
     };
   },
 };

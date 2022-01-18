@@ -19,6 +19,8 @@ import UsersCreate from "../components/users/UsersCreate";
 import UsersEdit from "../components/users/UsersEdit";
 import UsersView from "../components/users/UsersView";
 
+import ReservationsIndex from "../components/reservations/ReservationsIndex";
+
 const routes = [
     {
         path: "/dashboard",
@@ -100,6 +102,11 @@ const routes = [
         name: "users.view",
         component: UsersView,
         props: true,
+    },
+    {
+        path: "/reservations",
+        name: "reservations.index",
+        component: ReservationsIndex,
     },
     //((((((((((((((((((((((((((((((((((((((((((((Test Route))))))))))))))))))))))))))))))))))))))))))))
     {

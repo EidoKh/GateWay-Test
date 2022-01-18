@@ -9,7 +9,6 @@ export default function useLoans() {
 
     const getLoans = async (id) => {
         let response = await axios.get("/api/user-loans/" + id);
-        console.log("lon", response.data);
         loans.value = response.data.data;
     };
 
