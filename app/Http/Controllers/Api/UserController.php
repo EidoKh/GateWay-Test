@@ -32,7 +32,25 @@ class UserController extends Controller
 
         return response($response, 201);
     }
-
+    function register(Request $request)
+    {
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', 'min:6', 'confirmed']
+        ]);
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            // 'phone' => $request->phone,
+            // 'status' => $request->status,
+            // 'location' => $request->location,
+            // 'user_type' => $request->user_type,
+            // 'added_at' => $request->added_at,
+            'user_image' => 'default.jpg',
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *

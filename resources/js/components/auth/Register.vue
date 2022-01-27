@@ -11,7 +11,7 @@
       w-full
     "
   >
-    <form>
+    <form @submit.prevent="saveForm()">
       {{ form }}
       <div class="bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm">
         <div class="space-y-4">
@@ -41,7 +41,7 @@
               >Email</label
             >
             <input
-              type="text"
+              type="email"
               class="
                 bg-indigo-50
                 px-4
@@ -74,11 +74,14 @@
             />
           </div>
           <div>
-            <label for="email" class="block mb-1 text-gray-600 font-semibold"
+            <label
+              for="password_confirmation"
+              class="block mb-1 text-gray-600 font-semibold"
               >Repeat Password</label
             >
             <input
               type="password"
+              id="password_confirmation"
               autocomplete="new-password"
               class="
                 bg-indigo-50
@@ -89,11 +92,12 @@
                 w-full
                 text-black
               "
-              v-model="form.confirm_password"
+              v-model="form.password_confirmation"
             />
           </div>
         </div>
         <button
+          type="submit"
           class="
             mt-4
             w-full
@@ -114,17 +118,29 @@
   </div>
 </template>
 <script>
-import { reactive } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
+import axios from "axios";
 export default {
   setup() {
     let form = reactive({
       name: "",
       email: "",
       password: "",
-      confirm_password: "",
+      password_confirmation: "",
     });
+    let errors = ref([]);
+    const saveForm = () => {
+      axios
+        .post("api/register", form)
+        .then(() => {
+          console.log("saved");
+        })
+        .catch((error) => {
+          errors.value = error.response.data.errors;
+        });
+    };
 
-    return { form };
+    return { form, saveForm, errors };
   },
 };
 </script>

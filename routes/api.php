@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('login', [\App\Http\Controllers\Api\UserController::class, 'login']);
-// Route::post('/login', 'AuthController@login');
+Route::post('register', [\App\Http\Controllers\Api\UserController::class, 'register']);
 
 Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
 Route::apiResource('books', \App\Http\Controllers\Api\BookController::class);
