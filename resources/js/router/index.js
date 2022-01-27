@@ -21,6 +21,9 @@ import UsersView from "../components/users/UsersView";
 
 import ReservationsIndex from "../components/reservations/ReservationsIndex";
 
+import Login from "../components/auth/Login.vue";
+import Register from "../components/auth/Register.vue";
+
 const routes = [
     {
         path: "/dashboard",
@@ -107,6 +110,16 @@ const routes = [
         path: "/reservations",
         name: "reservations.index",
         component: ReservationsIndex,
+    },
+    {
+        path: "/loginn",
+        name: "login",
+        component: Login,
+    },
+    {
+        path: "/registerr",
+        name: "register",
+        component: Register,
     },
     //((((((((((((((((((((((((((((((((((((((((((((Test Route))))))))))))))))))))))))))))))))))))))))))))
     {
