@@ -1,4 +1,5 @@
 <template>
+  <button class="bg-blue-900 text-white p-4" @click="logoutUser">Logout</button>
   <div
     class="
       h-screen
@@ -11,8 +12,8 @@
       w-full
     "
   >
-    <form @submit.prevent="saveForm()">
-      {{ form }}
+    <form @submit.prevent="loginUser()">
+      {{ authUser }}
       <div class="bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm">
         <div class="space-y-4">
           <h1 class="text-center text-2xl font-semibold text-gray-600">
@@ -77,8 +78,10 @@
     </form>
   </div>
 </template>
+
 <script>
 import { reactive, ref } from "@vue/reactivity";
+import { getHeader } from "../../config";
 import axios from "axios";
 export default {
   setup() {
@@ -87,18 +90,54 @@ export default {
       password: "",
     });
     let errors = ref([]);
-    const saveForm = () => {
+    let access_token = ref(null);
+    const authUser = reactive({});
+    const loginUser = () => {
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        console.log(response);
+        axios.post("api/login", form).then((response) => {
+          console.log(response.data);
+          authUser.access_token = response.data.access_token;
+          window.localStorage.setItem("token", response.data.access_token);
+          getSecrets();
+        });
+      });
+
+      // axios
+      //   .post("api/login", form)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     authUser.access_token = res.data.access_token;
+      //     authUser.refresh_token = res.data.refresh_token;
+      //     window.localStorage.setItem("authUser", JSON.stringify(authUser));
+      //     axios.get("api/user", { headers: getHeader() }).then((response) => {
+      //       console.log("user: ", response);
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     errors.value = error.response.data.errors;
+      //   });
+    };
+    function getSecrets() {
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${authUser.access_token}`;
+      axios.get("api/user").then((response) => {
+        console.log("user: ", response.data);
+      });
+    }
+    function logoutUser() {
       axios
-        .post("api/login", form)
-        .then(() => {
-          console.log("saved");
+        .post("api/logout")
+        .then((response) => {
+          localStorage.removeItem("token");
         })
         .catch((error) => {
-          errors.value = error.response.data.errors;
+          console.log(error);
         });
-    };
+    }
 
-    return { form, saveForm, errors };
+    return { form, loginUser, errors, authUser, logoutUser };
   },
 };
 </script>

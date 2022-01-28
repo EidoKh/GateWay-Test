@@ -27,7 +27,7 @@ class UserController extends Controller
 
         $response = [
             'user' => $user,
-            'token' => $token
+            'access_token' => $token
         ];
 
         return response($response, 201);
@@ -50,6 +50,12 @@ class UserController extends Controller
             // 'added_at' => $request->added_at,
             'user_image' => 'default.jpg',
         ]);
+    }
+
+    function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['msg' => 'user logged out successfully']);
     }
     /**
      * Display a listing of the resource.

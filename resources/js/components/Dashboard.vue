@@ -1,5 +1,6 @@
 <template>
   <!-- Statistics Cards -->
+
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
     <div
       class="
@@ -2369,7 +2370,20 @@
 </template>
 
 <script>
-export default {};
+import { onMounted, ref } from "@vue/runtime-core";
+import axios from "axios";
+export default {
+  setup() {
+    let user = ref(null);
+    onMounted(() => {
+      axios.get("api/user").then((res) => {
+        user.value = res.data;
+      });
+      console.log(user.value);
+    });
+    return { user };
+  },
+};
 </script>
 
 <style>
