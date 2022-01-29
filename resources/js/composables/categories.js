@@ -1,20 +1,26 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import useConfig from "../config";
 
 export default function useCategories() {
     const categories = ref([]);
     const category = ref([]);
     const router = useRouter();
     const errors = ref("");
+    const { getHeader } = useConfig();
 
     const getCategories = async () => {
-        let response = await axios.get("/api/categories");
+        let response = await axios.get("/api/categories", {
+            headers: getHeader(),
+        });
         categories.value = response.data.data;
     };
 
     const getCategory = async (id) => {
-        let response = await axios.get("/api/categories/" + id);
+        let response = await axios.get("/api/categories/" + id, {
+            headers: getHeader(),
+        });
         category.value = response.data.data;
     };
 
@@ -25,7 +31,9 @@ export default function useCategories() {
         fd.append("category_image", data.form.category_image);
         errors.value = "";
         try {
-            await axios.post("/api/categories", fd);
+            await axios.post("/api/categories", fd, {
+                headers: getHeader(),
+            });
             await router.push({ name: "categories.index" });
         } catch (e) {
             if (e.response.status === 422) {
@@ -43,11 +51,10 @@ export default function useCategories() {
         fd.append("category_image", data.form.category_image);
         fd.append("category_name", data.form.category_name);
         errors.value = "";
+        let header = JSON.stringify(getHeader());
         try {
             await axios.post("/api/categories/" + id, fd, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: getHeader(),
             });
             await router.push({ name: "categories.index" });
         } catch (e) {
@@ -58,7 +65,9 @@ export default function useCategories() {
     };
 
     const destroyCategory = async (id) => {
-        await axios.delete("/api/categories/" + id);
+        await axios.delete("/api/categories/" + id, {
+            headers: getHeader(),
+        });
     };
 
     return {

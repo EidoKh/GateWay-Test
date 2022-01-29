@@ -197,7 +197,7 @@
           :src="
             imagePreview != null
               ? imagePreview
-              : URL + 'images/users_images/' + user.user_image
+              : APP_URL + 'images/users_images/' + user.user_image
           "
           alt=""
           class="figure-img img-fluid rounded"
@@ -272,7 +272,7 @@
 </template>
 <script>
 import useUsers from "../../composables/users";
-import useLookups from "../../composables/lookups";
+import useConfig from "../../config";
 import { onMounted, reactive, ref } from "vue";
 
 export default {
@@ -285,7 +285,7 @@ export default {
 
   setup(props) {
     const { user, getUser, updateUser } = useUsers();
-    const { URL } = useLookups();
+    const { APP_URL } = useConfig()();
 
     onMounted(() => {
       getUser(props.id);
@@ -310,7 +310,7 @@ export default {
     return {
       user,
       saveUser,
-      URL,
+      APP_URL,
       onFileSelected,
       imagePreview,
     };

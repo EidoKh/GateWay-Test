@@ -18,11 +18,94 @@
         border-none
       "
     >
-      <img
-        class="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden"
-        src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg"
-      />
-      <span class="hidden md:block">المسؤول</span>
+      <div
+        v-if="user != null"
+        class="relative"
+        v-click-outside="
+          () => {
+            isOpen = false;
+          }
+        "
+      >
+        <button
+          @click="isOpen = !isOpen"
+          class="
+            flex flex-row
+            items-center
+            w-full
+            px-1
+            py-1
+            mt-2
+            text-sm
+            font-semibold
+            text-left
+            bg-transparent
+            rounded-full
+            md:w-auto md:mt-0 md:ml-2
+            hover:text-gray-900
+            focus:text-gray-900
+            hover:bg-gray-200
+            focus:bg-gray-200 focus:outline-none focus:shadow-outline
+          "
+        >
+          <img
+            :src="APP_URL + 'images/users_images/' + user.user_image"
+            class="w-auto h-6 rounded-full"
+            alt=""
+          />
+        </button>
+        <div
+          v-show="isOpen"
+          class="
+            z-10
+            absolute
+            right-0
+            w-full
+            mt-2
+            origin-top-right
+            rounded-md
+            shadow-lg
+            md:w-48
+          "
+        >
+          <ul
+            class="
+              px-2
+              py-2
+              bg-white
+              dark:bg-gray-700
+              text-black
+              dark:text-white
+              rounded-md
+              shadow
+            "
+          >
+            <li
+              class="
+                cursor-pointer
+                block
+                px-4
+                py-2
+                mt-2
+                bg-transparent
+                rounded-lg
+                text-sm
+                font-semibold
+                md:mt-0
+                hover:bg-blue-500 hover:text-white
+                dark:hover:bg-gray-600
+                text-white-600
+                hover:text-white-800 hover:border-blue-500
+                dark:hover:border-gray-800
+              "
+              @click="logoutUser"
+            >
+              تسجيل الخروج
+            </li>
+          </ul>
+        </div>
+      </div>
+      <span v-if="user != null" class="hidden md:block">{{ user.name }}</span>
     </div>
     <div
       class="
@@ -179,6 +262,11 @@
 </template>
 
 <script>
+import { ref } from "@vue/reactivity";
+import { onMounted } from "@vue/runtime-core";
+import useConfig from "../../config";
+import axios from "axios";
+import { useRouter } from "vue-router";
 export default {
   emits: ["change_theme"],
   props: {
@@ -186,6 +274,31 @@ export default {
       type: Boolean,
       default: true,
     },
+  },
+  setup() {
+    const { APP_URL, getHeader } = useConfig();
+    const router = useRouter();
+    let isOpen = ref(false);
+    let user = ref({});
+    onMounted(() => {
+      user.value = JSON.parse(window.localStorage.getItem("logged_in_user"));
+      console.log(user.value);
+    });
+
+    async function logoutUser() {
+      await axios
+        .get("api/logout", { headers: getHeader() })
+        .then(async () => {
+          await localStorage.removeItem("token");
+          await localStorage.removeItem("logged_in_user");
+          await location.reload();
+          router.push({ name: "login" });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    return { isOpen, user, APP_URL, logoutUser };
   },
 };
 </script>

@@ -1,5 +1,4 @@
 <template>
-  <button class="bg-blue-900 text-white p-4" @click="logoutUser">Logout</button>
   <div
     class="
       h-screen
@@ -13,11 +12,10 @@
     "
   >
     <form @submit.prevent="loginUser()">
-      {{ authUser }}
       <div class="bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm">
         <div class="space-y-4">
           <h1 class="text-center text-2xl font-semibold text-gray-600">
-            Register
+            Login
           </h1>
           <div>
             <label for="email" class="block mb-1 text-gray-600 font-semibold"
@@ -72,7 +70,7 @@
             tracking-wide
           "
         >
-          Register
+          Login
         </button>
       </div>
     </form>
@@ -81,63 +79,52 @@
 
 <script>
 import { reactive, ref } from "@vue/reactivity";
-import { getHeader } from "../../config";
+import useConfig from "../../config";
 import axios from "axios";
+import { useRouter } from "vue-router";
+import { onMounted } from "@vue/runtime-core";
 export default {
   setup() {
+    const { APP_URL, getHeader } = useConfig();
+    const router = useRouter();
     let form = reactive({
       email: "",
       password: "",
     });
+
     let errors = ref([]);
-    let access_token = ref(null);
     const authUser = reactive({});
-    const loginUser = () => {
-      axios.get("/sanctum/csrf-cookie").then((response) => {
+    const loginUser = async () => {
+      await axios.get("/sanctum/csrf-cookie").then((response) => {
         console.log(response);
-        axios.post("api/login", form).then((response) => {
-          console.log(response.data);
+        axios.post("api/login", form).then(async (response) => {
           authUser.access_token = response.data.access_token;
-          window.localStorage.setItem("token", response.data.access_token);
-          getSecrets();
+          await window.localStorage.setItem(
+            "token",
+            response.data.access_token
+          );
+          await getSecrets();
+          await router.push({ name: "dashboard" });
+          location.reload();
         });
       });
-
-      // axios
-      //   .post("api/login", form)
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     authUser.access_token = res.data.access_token;
-      //     authUser.refresh_token = res.data.refresh_token;
-      //     window.localStorage.setItem("authUser", JSON.stringify(authUser));
-      //     axios.get("api/user", { headers: getHeader() }).then((response) => {
-      //       console.log("user: ", response);
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     errors.value = error.response.data.errors;
-      //   });
     };
-    function getSecrets() {
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${authUser.access_token}`;
-      axios.get("api/user").then((response) => {
-        console.log("user: ", response.data);
-      });
-    }
-    function logoutUser() {
-      axios
-        .post("api/logout")
-        .then((response) => {
-          localStorage.removeItem("token");
+    async function getSecrets() {
+      console.log(getHeader());
+      await axios
+        .get("api/user", {
+          headers: await getHeader(),
         })
-        .catch((error) => {
-          console.log(error);
+        .then(async (response) => {
+          console.log("user: ", response.data);
+          await window.localStorage.setItem(
+            "logged_in_user",
+            JSON.stringify(response.data)
+          );
         });
     }
 
-    return { form, loginUser, errors, authUser, logoutUser };
+    return { form, loginUser, errors, authUser, APP_URL };
   },
 };
 </script>

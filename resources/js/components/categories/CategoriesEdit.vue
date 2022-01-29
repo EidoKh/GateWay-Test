@@ -59,7 +59,7 @@
         :src="
           imagePreview != null
             ? imagePreview
-            : URL + 'images/categories_images/' + category.category_image
+            : APP_URL + 'images/categories_images/' + category.category_image
         "
         alt=""
         class="figure-img img-fluid rounded"
@@ -134,7 +134,7 @@
 <script>
 import useCategories from "../../composables/categories";
 import { onMounted, reactive, ref } from "vue";
-import useLookups from "../../composables/lookups";
+import useConfig from "../../config";
 
 export default {
   props: {
@@ -146,7 +146,7 @@ export default {
 
   setup(props) {
     const { errors, category, getCategory, updateCategory } = useCategories();
-    const { URL } = useLookups();
+    const { APP_URL } = useConfig();
     onMounted(getCategory(props.id));
 
     const saveCategory = async () => {
@@ -171,7 +171,7 @@ export default {
       saveCategory,
       onFileSelected,
       imagePreview,
-      URL,
+      APP_URL,
     };
   },
 };

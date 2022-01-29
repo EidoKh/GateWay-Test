@@ -1,20 +1,26 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import useConfig from "../config";
 
 export default function useBooks() {
     const books = ref([]);
     const book = ref([]);
     const router = useRouter();
     const errors = ref("");
+    const { getHeader } = useConfig();
 
     const getBooks = async () => {
-        let response = await axios.get("/api/books");
+        let response = await axios.get("/api/books", {
+            headers: getHeader(),
+        });
         books.value = response.data.data;
     };
 
     const getBook = async (id) => {
-        let response = await axios.get("/api/books/" + id);
+        let response = await axios.get("/api/books/" + id, {
+            headers: getHeader(),
+        });
         book.value = response.data.data;
     };
     let fd = new FormData();
@@ -31,7 +37,9 @@ export default function useBooks() {
         fd.append("book_image", data.form.book_image);
         errors.value = "";
         try {
-            await axios.post("/api/books", fd);
+            await axios.post("/api/books", fd, {
+                headers: getHeader(),
+            });
             await router.push({ name: "books.index" });
         } catch (e) {
             if (e.response.status === 422) {
@@ -56,9 +64,7 @@ export default function useBooks() {
         errors.value = "";
         try {
             await axios.post("/api/books/" + id, fd, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: getHeader(),
             });
             await router.push({ name: "books.index" });
         } catch (e) {
@@ -69,7 +75,9 @@ export default function useBooks() {
     };
 
     const destroyBook = async (id) => {
-        await axios.delete("/api/books/" + id);
+        await axios.delete("/api/books/" + id, {
+            headers: getHeader(),
+        });
     };
     const editBook = (id) => {
         router.push({ name: "books.edit", params: { id: id } });

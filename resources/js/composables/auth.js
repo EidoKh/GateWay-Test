@@ -1,12 +1,14 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import useConfig from "../config";
 
 export default function useCategories() {
     const categories = ref([]);
     const category = ref([]);
     const router = useRouter();
     const errors = ref("");
+    const { getHeader } = useConfig();
 
     const getCategories = async () => {
         let response = await axios.get("/api/categories");

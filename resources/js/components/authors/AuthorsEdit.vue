@@ -61,7 +61,7 @@
         :src="
           imagePreview != null
             ? imagePreview
-            : URL + 'images/authors_images/' + author.author_image
+            : APP_URL + 'images/authors_images/' + author.author_image
         "
         alt=""
         class="figure-img img-fluid rounded"
@@ -138,7 +138,7 @@
 <script>
 import { onMounted, reactive, ref } from "@vue/runtime-core";
 import useAuthors from "../../composables/authors";
-import useLookups from "../../composables/lookups";
+import useConfig from "../../config";
 export default {
   props: {
     id: {
@@ -148,7 +148,7 @@ export default {
   },
   setup(props) {
     const { getAuthor, author, updateAuthor } = useAuthors();
-    const { URL } = useLookups();
+    const { APP_URL } = useConfig();
 
     onMounted(async () => {
       await getAuthor(props.id);
@@ -170,7 +170,7 @@ export default {
       };
     }
 
-    return { author, onFileSelected, imagePreview, saveAuthor, URL };
+    return { author, onFileSelected, imagePreview, saveAuthor, APP_URL };
   },
 };
 </script>

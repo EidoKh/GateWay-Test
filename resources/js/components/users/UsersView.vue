@@ -13,7 +13,7 @@
             <div class="image overflow-hidden">
               <img
                 class="h-auto w-full mx-auto"
-                :src="URL + 'images/users_images/' + user.user_image"
+                :src="APP_URL + 'images/users_images/' + user.user_image"
                 alt=""
               />
             </div>
@@ -181,7 +181,7 @@
 </template>
 <script>
 import useUsers from "../../composables/users";
-import useLookups from "../../composables/lookups";
+import useConfig from "../../config";
 import useLoans from "../../composables/loans";
 import useFines from "../../composables/fines";
 import Fines from "../fines/Fines.vue";
@@ -206,7 +206,7 @@ export default {
     const { user, getUser } = useUsers();
     const { getLoans, loans } = useLoans();
     const { getFines, fines } = useFines();
-    const { URL } = useLookups();
+    const { APP_URL } = useConfig();
     let activeTab = ref("fines");
 
     onMounted(async () => {
@@ -216,7 +216,7 @@ export default {
     });
     return {
       user,
-      URL,
+      APP_URL,
       activeTab,
       loans,
       fines,

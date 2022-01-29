@@ -7,6 +7,7 @@ use App\Http\Resources\EmptyResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -54,7 +55,13 @@ class UserController extends Controller
 
     function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        // $request->user()->currentAccessToken()->delete();
+        // Auth::logout();
+        if ($request->user()->tokens()->exists()) {
+            auth()->user()->tokens()->delete();
+        }
+        $response = ['message' => 'You have been successfully logged out!'];
+        return response($response, 200);
         return response()->json(['msg' => 'user logged out successfully']);
     }
     /**

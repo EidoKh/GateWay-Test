@@ -1,8 +1,14 @@
-export const getHeader = function () {
-    const tokenDate = JSON.parse(window.localStorage.getItem("authUser"));
-    const headers = {
-        Accept: "application/json",
-        Authorization: "Bearer" + tokenDate.access_token,
+import { ref } from "vue";
+
+export default function useConfig() {
+    const APP_URL = "http://127.0.0.1:8000/";
+    const tokenDate = window.localStorage.getItem("token");
+    const getHeader = () => {
+        const headers = {
+            Authorization: `Bearer ${tokenDate}`,
+            "Content-Type": "multipart/form-data",
+        };
+        return headers;
     };
-    return headers;
-};
+    return { APP_URL, getHeader };
+}

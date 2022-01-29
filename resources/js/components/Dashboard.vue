@@ -2375,12 +2375,6 @@ import axios from "axios";
 export default {
   setup() {
     let user = ref(null);
-    onMounted(() => {
-      axios.get("api/user").then((res) => {
-        user.value = res.data;
-      });
-      console.log(user.value);
-    });
     return { user };
   },
 };

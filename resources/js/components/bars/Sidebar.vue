@@ -34,7 +34,6 @@
           transition-all
           duration-300
           border-none
-          z-10
           sidebar
         "
       >

@@ -1,35 +1,45 @@
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import useConfig from "../config";
 
 export default function useAuthors() {
     const authors = ref([]);
     const author = ref([]);
     const router = useRouter();
+    const { getHeader } = useConfig();
     const storeAuthor = async (data) => {
         let fd = new FormData();
         fd.append("author_name", data.form.author_name);
         fd.append("about_author", data.form.about_author);
         fd.append("image", data.file);
         try {
-            await axios.post("/api/authors", fd);
+            await axios.post("/api/authors", fd, {
+                headers: getHeader(),
+            });
             await router.push({ name: "authors.index" });
         } catch (error) {}
     };
     const getAuthors = async () => {
         try {
-            let response = await axios.get("/api/authors");
+            let response = await axios.get("/api/authors", {
+                headers: getHeader(),
+            });
             authors.value = response.data.data;
         } catch (error) {}
     };
     const getAuthor = async (id) => {
         try {
-            let response = await axios.get("/api/authors/" + id);
+            let response = await axios.get("/api/authors/" + id, {
+                headers: getHeader(),
+            });
             author.value = response.data.data;
         } catch (error) {}
     };
     const destroyAuthor = async (id) => {
-        await axios.delete("/api/authors/" + id);
+        await axios.delete("/api/authors/" + id, {
+            headers: getHeader(),
+        });
         getAuthors();
     };
     const editAuthor = (id) => {
@@ -46,9 +56,7 @@ export default function useAuthors() {
         let errors = "";
         try {
             await axios.post("/api/authors/" + id, fd, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+                headers: getHeader(),
             });
             await router.push({ name: "authors.index" });
         } catch (e) {

@@ -255,7 +255,7 @@
         :src="
           imagePreview != null
             ? imagePreview
-            : URL + 'images/books_images/' + book.book_image
+            : APP_URL + 'images/books_images/' + book.book_image
         "
         alt=""
         class="figure-img img-fluid rounded"
@@ -332,6 +332,7 @@
 <script>
 import useBooks from "../../composables/books";
 import useLookups from "../../composables/lookups";
+import useConfig from "../../config";
 import { onMounted, reactive, ref } from "vue";
 
 export default {
@@ -344,8 +345,8 @@ export default {
 
   setup(props) {
     const { errors, book, getBook, updateBook } = useBooks();
-    const { getCategories, categories, getAuthors, authors, URL } =
-      useLookups();
+    const { getCategories, categories, getAuthors, authors } = useLookups();
+    const { APP_URL } = useConfig()();
 
     onMounted(() => {
       getBook(props.id);
@@ -375,7 +376,7 @@ export default {
       saveBook,
       categories,
       authors,
-      URL,
+      APP_URL,
       onFileSelected,
       imagePreview,
     };

@@ -1,20 +1,26 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import useConfig from "../config";
 
 export default function useUsers() {
     const users = ref([]);
     const user = ref([]);
     const router = useRouter();
     const errors = ref("");
+    const { getHeader } = useConfig();
 
     const getUsers = async () => {
-        let response = await axios.get("/api/users");
+        let response = await axios.get("/api/users", {
+            headers: getHeader(),
+        });
         users.value = response.data.data;
     };
 
     const getUser = async (id) => {
-        let response = await axios.get("/api/users/" + id);
+        let response = await axios.get("/api/users/" + id, {
+            headers: getHeader(),
+        });
         user.value = response.data.data;
     };
     const storeUser = async (data) => {
@@ -32,7 +38,7 @@ export default function useUsers() {
 
         errors.value = "";
         try {
-            await axios.post("/api/users", fd);
+            await axios.post("/api/users", fd, { headers: getHeader() });
             await router.push({ name: "users.index" });
         } catch (e) {
             if (e.response.status === 422) {
@@ -56,10 +62,12 @@ export default function useUsers() {
         fd.append("user_image", data.form.user_image);
 
         errors.value = "";
+        let header = getHeader();
         try {
             await axios.post("/api/users/" + id, fd, {
                 headers: {
                     "Content-Type": "multipart/form-data",
+                    header,
                 },
             });
             await router.push({ name: "users.index" });
@@ -71,7 +79,10 @@ export default function useUsers() {
     };
 
     const destroyUser = async (id) => {
-        await axios.delete("/api/users/" + id);
+        await axios.delete("/api/users/" + id),
+            {
+                headers: getHeader(),
+            };
     };
     const editUser = (id) => {
         router.push({ name: "users.edit", params: { id: id } });
