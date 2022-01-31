@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FineController;
 use App\Http\Controllers\Api\LoanController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +42,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('fines', \App\Http\Controllers\Api\FineController::class);
     Route::apiResource('reservations', \App\Http\Controllers\Api\ReservationController::class);
 });
+Route::get('all-categories', [CategoryController::class, 'getAll']);
