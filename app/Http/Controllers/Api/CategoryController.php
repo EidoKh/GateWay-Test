@@ -27,7 +27,7 @@ class CategoryController extends Controller
     }
     public function getRandomly()
     {
-        return CategoryResource::collection(Category::inRandomOrder()->limit(6)->get());
+        return CategoryResource::collection(Category::limit(6)->get());
         // User::inRandomOrder()->limit(5)->get();
     }
 
