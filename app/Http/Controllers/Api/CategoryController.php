@@ -25,6 +25,11 @@ class CategoryController extends Controller
     {
         return CategoryResource::collection(Category::all());
     }
+    public function getRandomly()
+    {
+        return CategoryResource::collection(Category::inRandomOrder()->limit(6)->get());
+        // User::inRandomOrder()->limit(5)->get();
+    }
 
     /**
      * Store a newly created resource in storage.

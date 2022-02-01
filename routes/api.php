@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FineController;
 use App\Http\Controllers\Api\LoanController;
@@ -43,3 +44,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('reservations', \App\Http\Controllers\Api\ReservationController::class);
 });
 Route::get('all-categories', [CategoryController::class, 'getAll']);
+Route::get('random-categories', [CategoryController::class, 'getRandomly']);
+Route::get('most-liked', [BookController::class, 'mostLiked']);

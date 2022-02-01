@@ -25,6 +25,7 @@ class BookResource extends JsonResource
             'number_of_copies' => $this->number_of_copies,
             'category' => Category::find($this->category_id)->category_name,
             'author' => Author::find($this->author_id)->author_name,
+            'book_image' => $this->book_image
         ];
     }
 }

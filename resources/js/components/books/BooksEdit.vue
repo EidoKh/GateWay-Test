@@ -346,7 +346,7 @@ export default {
   setup(props) {
     const { errors, book, getBook, updateBook } = useBooks();
     const { getCategories, categories, getAuthors, authors } = useLookups();
-    const { APP_URL } = useConfig()();
+    const { APP_URL } = useConfig();
 
     onMounted(() => {
       getBook(props.id);

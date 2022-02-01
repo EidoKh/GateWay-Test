@@ -22,6 +22,11 @@ class BookController extends Controller
     {
         return BookResource::collection(Book::all());
     }
+    public function mostLiked()
+    {
+        return BookResource::collection(Book::limit(10)->get());
+        return BookResource::collection(Book::inRandomOrder()->limit(6)->get());
+    }
 
     /**
      * Show the form for creating a new resource.
