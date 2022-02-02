@@ -46,3 +46,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('all-categories', [CategoryController::class, 'getAll']);
 Route::get('random-categories', [CategoryController::class, 'getRandomly']);
 Route::get('most-liked', [BookController::class, 'mostLiked']);
+Route::get('all_books', [BookController::class, 'getAll']);

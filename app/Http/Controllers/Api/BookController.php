@@ -22,6 +22,11 @@ class BookController extends Controller
     {
         return BookResource::collection(Book::all());
     }
+    public function getAll(Request $request)
+    {
+        return BookResource::collection(Book::all()->where('language', $request->lang));
+        // return $request;
+    }
     public function mostLiked()
     {
         return BookResource::collection(Book::limit(10)->get());
