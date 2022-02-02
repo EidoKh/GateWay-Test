@@ -24,8 +24,14 @@ class BookController extends Controller
     }
     public function getAll(Request $request)
     {
-        return BookResource::collection(Book::all()->where('language', $request->lang));
-        // return $request;
+        if ($request->has('lang') && $request->lang != "")
+            return BookResource::collection(
+                Book::where('title', 'LIKE', '%' . $request->search . '%')
+                    ->where('language', $request->lang)->get()
+            );
+        return BookResource::collection(
+            Book::where('title', 'LIKE', '%' . $request->search . '%')->get()
+        );
     }
     public function mostLiked()
     {
