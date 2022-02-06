@@ -9,6 +9,7 @@ use App\Http\Resources\EmptyResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -17,18 +18,26 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getAll(Request $request)
     {
-        return CategoryResource::collection(Category::all());
-    }
-    public function getAll()
-    {
-        return CategoryResource::collection(Category::all());
+        return CategoryResource::collection(
+            Category::where('category_name', 'LIKE', '%' . $request->search . '%')
+                ->get()
+        );
     }
     public function getRandomly()
     {
-        return CategoryResource::collection(Category::limit(6)->get());
-        // User::inRandomOrder()->limit(5)->get();
+        // return CategoryResource::collection(Category::limit(6)->get());
+        return CategoryResource::collection(Category::inRandomOrder()->limit(6)->get());
+    }
+
+    public function getDetails($id)
+    {
+        return new CategoryResource(Category::where('id', $id)->get());
+    }
+    public function index()
+    {
+        return CategoryResource::collection(Category::all());
     }
 
     /**
@@ -39,10 +48,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        // $category = Category::create($request->validated());
-
         if ($request->hasFile('image')) {
-            Log::info($request->all());
             $image = $request->image;
             $imageName = $image->getClientOriginalName();
             $imageName = time() . '_' . $imageName;
@@ -53,6 +59,7 @@ class CategoryController extends Controller
         $category = new Category();
         $category->category_name = $request->category_name;
         $category->category_image = $imageName;
+        $category->slug = Str::slug($request->category_name, '-');
 
         $category->save();
 
@@ -95,7 +102,8 @@ class CategoryController extends Controller
         }
         $category->update([
             'category_name' => $request->category_name,
-            'category_image' => $imageName
+            'category_image' => $imageName,
+            'slug' => Str::slug($request->category_name, '-')
         ]);
 
         return new EmptyResource($category);

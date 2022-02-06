@@ -38,6 +38,10 @@ class BookController extends Controller
         return BookResource::collection(Book::limit(10)->get());
         return BookResource::collection(Book::inRandomOrder()->limit(6)->get());
     }
+    public function categoryBooks($category_id)
+    {
+        return BookResource::collection(Book::where('category_id', $category_id)->get());
+    }
 
     /**
      * Show the form for creating a new resource.
