@@ -12,6 +12,6 @@ class Book extends Model
         'category_id', 'title', 'description',
         'author_id', 'language', 'pages',
         'number_of_copies', 'publication_year',
-        'book_image', 'book_thumbnail'
+        'book_image', 'book_thumbnail', 'slug', 'price'
     ];
 }

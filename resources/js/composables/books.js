@@ -27,6 +27,7 @@ export default function useBooks() {
     const storeBook = async (data) => {
         fd.append("image", data.file);
         fd.append("title", data.form.title);
+        fd.append("price", data.form.price);
         fd.append("description", data.form.description);
         fd.append("category_id", data.form.category_id);
         fd.append("author_id", data.form.author_id);
@@ -53,6 +54,7 @@ export default function useBooks() {
         fd.append("new_image", data.file);
         fd.append("book_image", data.form.book_image);
         fd.append("title", data.form.title);
+        fd.append("price", data.form.price);
         fd.append("description", data.form.description);
         fd.append("category_id", data.form.category_id);
         fd.append("author_id", data.form.author_id);

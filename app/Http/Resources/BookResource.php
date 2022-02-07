@@ -19,13 +19,16 @@ class BookResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            // 'description' => $this->description,
+            'price' => $this->price,
+            'description' => $this->description,
             'language' => $this->language,
             'pages' => $this->pages,
             'number_of_copies' => $this->number_of_copies,
             'category' => Category::find($this->category_id)->category_name,
             'author' => Author::find($this->author_id)->author_name,
-            'book_image' => $this->book_image
+            'book_image' => $this->book_image,
+            'slug' => $this->slug,
+            'publication_year' => $this->publication_year
         ];
     }
 }

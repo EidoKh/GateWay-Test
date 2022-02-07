@@ -13,6 +13,18 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
+    public static function getSlug($slug)
+    {
+        $index = 1;
+        $new_slug = $slug;
+        if (Category::where('slug', $slug)->count()) {
+            while (Category::where('slug', $new_slug)->count()) {
+                $new_slug = $slug . '-' . $index;
+                $index++;
+            }
+        }
+        return $new_slug;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -31,9 +43,10 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::inRandomOrder()->limit(6)->get());
     }
 
-    public function getDetails($id)
+    public function getDetails($slug)
     {
-        return new CategoryResource(Category::where('id', $id)->get());
+        $cat[] = Category::where('slug', $slug)->first();
+        return new CategoryResource($cat);
     }
     public function index()
     {
@@ -59,7 +72,8 @@ class CategoryController extends Controller
         $category = new Category();
         $category->category_name = $request->category_name;
         $category->category_image = $imageName;
-        $category->slug = Str::slug($request->category_name, '-');
+        $category->slug =
+            self::getSlug(Str::slug($request->category_name, '-'));
 
         $category->save();
 
@@ -103,7 +117,9 @@ class CategoryController extends Controller
         $category->update([
             'category_name' => $request->category_name,
             'category_image' => $imageName,
-            'slug' => Str::slug($request->category_name, '-')
+            'slug' =>  self::getSlug(
+                Str::slug($request->category_name, '-')
+            )
         ]);
 
         return new EmptyResource($category);

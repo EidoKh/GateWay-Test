@@ -51,6 +51,32 @@
       />
     </div>
     <div class="flex flex-col text-right">
+      <label for="title" class="">السعر</label>
+      <input
+        type="number"
+        name="price"
+        id="price"
+        placeholder="سعر الكتاب"
+        v-model="form.price"
+        class="
+          w-100
+          mt-2
+          py-3
+          px-3
+          rounded-lg
+          bg-white
+          dark:bg-gray-800
+          border border-gray-400
+          dark:border-gray-700
+          text-gray-800
+          dark:text-gray-50
+          font-semibold
+          focus:border-blue-500 focus:outline-none
+          text-right
+        "
+      />
+    </div>
+    <div class="flex flex-col text-right">
       <label for="description" class="">الوصف</label>
       <textarea
         name="description"
@@ -332,6 +358,7 @@ export default {
     const form = reactive({
       title: "",
       description: "",
+      price: null,
       category_id: null,
       author_id: null,
       language: "",

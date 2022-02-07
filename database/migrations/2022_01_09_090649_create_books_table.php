@@ -17,6 +17,7 @@ class CreateBooksTable extends Migration
             $table->id();
             $table->foreignId('category_id');
             $table->string('title');
+            $table->float('price');
             $table->text('description');
             $table->foreignId('author_id');
             $table->string('language');
@@ -25,6 +26,7 @@ class CreateBooksTable extends Migration
             $table->integer('publication_year');
             $table->string('book_image')->default('default.jpg');
             $table->string('book_thumbnail')->default('default.jpg');
+            $table->string('slug');
             $table->timestamps();
         });
     }

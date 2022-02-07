@@ -44,8 +44,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('reservations', \App\Http\Controllers\Api\ReservationController::class);
 });
 Route::get('all-categories', [CategoryController::class, 'getAll']);
-Route::get('all-categories/{id}', [CategoryController::class, 'getDetails']);
+Route::get('all-categories/{slug}', [CategoryController::class, 'getDetails']);
 Route::get('random-categories', [CategoryController::class, 'getRandomly']);
 Route::get('most-liked', [BookController::class, 'mostLiked']);
 Route::get('all_books', [BookController::class, 'getAll']);
 Route::get('category_books/{category_id}', [BookController::class, 'categoryBooks']);
+Route::get('book_details/{slug}', [BookController::class, 'getDetails']);

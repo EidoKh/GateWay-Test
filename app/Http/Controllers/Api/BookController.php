@@ -10,9 +10,22 @@ use App\Http\Resources\SingleBookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
+    public static function getSlug($slug)
+    {
+        $index = 1;
+        $new_slug = $slug;
+        if (Book::where('slug', $slug)->count()) {
+            while (Book::where('slug', $new_slug)->count()) {
+                $new_slug = $slug . '-' . $index;
+                $index++;
+            }
+        }
+        return $new_slug;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +45,12 @@ class BookController extends Controller
         return BookResource::collection(
             Book::where('title', 'LIKE', '%' . $request->search . '%')->get()
         );
+    }
+    public function getDetails($slug)
+    {
+        $book[] = Book::where('slug', $slug)->first();
+        // return $t;
+        return BookResource::collection($book);
     }
     public function mostLiked()
     {
@@ -79,12 +98,11 @@ class BookController extends Controller
         $book->pages = $request->pages;
         $book->number_of_copies = $request->number_of_copies;
         $book->publication_year = $request->publication_year;
+        $book->price = $request->price;
         $book->book_image = $imageName;
+
+        $book->slug = self::getSlug(Str::slug($request->title, '-'));
         $book->save();
-
-        // Book::create($request->all());
-
-        // // return new SingleBookResource($book);
         return response()->noContent();
     }
 
@@ -109,6 +127,8 @@ class BookController extends Controller
     {
         //
     }
+
+
 
     /**
      * Update the specified resource in storage.
@@ -144,6 +164,10 @@ class BookController extends Controller
             "pages" => $request->pages,
             "number_of_copies" => $request->number_of_copies,
             "publication_year" => $request->publication_year,
+            "price" => $request->price,
+            'slug' => self::getSlug(
+                Str::slug($request->title, '-')
+            )
         ]);
 
         return new EmptyResource($book);
