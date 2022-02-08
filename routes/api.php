@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthorController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\FineController;
@@ -50,3 +51,6 @@ Route::get('most-liked', [BookController::class, 'mostLiked']);
 Route::get('all_books', [BookController::class, 'getAll']);
 Route::get('category_books/{category_id}', [BookController::class, 'categoryBooks']);
 Route::get('book_details/{slug}', [BookController::class, 'getDetails']);
+Route::get('all-authors', [AuthorController::class, 'getAll']);
+Route::get('all-authors/{slug}', [AuthorController::class, 'getDetails']);
+Route::get('author_books/{author_id}', [AuthorController::class, 'authorBooks']);

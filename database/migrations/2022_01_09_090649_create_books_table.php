@@ -26,7 +26,7 @@ class CreateBooksTable extends Migration
             $table->integer('publication_year');
             $table->string('book_image')->default('default.jpg');
             $table->string('book_thumbnail')->default('default.jpg');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

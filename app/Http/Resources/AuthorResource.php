@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Book;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthorResource extends JsonResource
@@ -17,9 +18,11 @@ class AuthorResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->author_name,
-            'about' => $this->about_author,
+            'about' => $this->author_about,
             'image' => $this->author_image,
-            'thumbnail' => $this->author_thumbnail
+            'thumbnail' => $this->author_thumbnail,
+            'slug' => $this->slug,
+            'number_of_books' => Book::where('author_id', $this->id)->count()
         ];
     }
 }

@@ -4,13 +4,47 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthorResource;
+use App\Http\Resources\BookResource;
 use App\Http\Resources\EmptyResource;
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AuthorController extends Controller
 {
+    public static function getSlug($slug)
+    {
+        $index = 1;
+        $new_slug = $slug;
+        if (Author::where('slug', $slug)->count()) {
+            while (Author::where('slug', $new_slug)->count()) {
+                $new_slug = $slug . '-' . $index;
+                $index++;
+            }
+        }
+        return $new_slug;
+    }
+    public function getDetails($slug)
+    {
+        $author = Author::where('slug', $slug)->first();
+        return new AuthorResource($author);
+    }
+    public function authorBooks($author_id)
+    {
+        return BookResource::collection(Book::where('author_id', $author_id)->get());
+    }
+
+    public function getAll(Request $request)
+    {
+        return AuthorResource::collection(
+            Author::where('author_name', 'LIKE', '%' . $request->search . '%')
+                ->get()
+        );
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -51,6 +85,7 @@ class AuthorController extends Controller
         $author->author_name = $request->author_name;
         $author->author_about = $request->about_author;
         $author->author_image = $imageName;
+        $author->slug = self::getSlug(Str::slug($request->author_name, '-'));
         $author->save();
         return response()->noContent();
     }
@@ -103,6 +138,7 @@ class AuthorController extends Controller
         $author->update([
             'author_name' => $request->author_name,
             'author_about' => $request->author_about,
+            'slug' => self::getSlug(Str::slug($request->author_name, '-')),
             'author_image' => $imageName
         ]);
 

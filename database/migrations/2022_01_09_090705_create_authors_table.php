@@ -19,6 +19,7 @@ class CreateAuthorsTable extends Migration
             $table->text('author_about');
             $table->string('author_image')->default('default.jpg');
             $table->string('author_thumbnail')->default('default.jpg');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

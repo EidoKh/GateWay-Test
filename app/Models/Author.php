@@ -9,6 +9,6 @@ class Author extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'author_name', 'author_about', 'author_image', 'author_thumbnail'
+        'author_name', 'author_about', 'author_image', 'author_thumbnail', 'slug'
     ];
 }
