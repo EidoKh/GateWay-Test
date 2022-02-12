@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Like;
 
 class Book extends Model
 {
@@ -14,4 +15,8 @@ class Book extends Model
         'number_of_copies', 'publication_year',
         'book_image', 'book_thumbnail', 'slug', 'price'
     ];
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }

@@ -12,4 +12,8 @@ class Like extends Model
         'book_id',
         'user_id',
     ];
+    public function book()
+    {
+        $this->belongsTo('Book');
+    }
 }

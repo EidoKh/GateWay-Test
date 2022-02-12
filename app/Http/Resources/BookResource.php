@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\Like;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookResource extends JsonResource
@@ -28,7 +29,9 @@ class BookResource extends JsonResource
             'author' => Author::find($this->author_id)->author_name,
             'book_image' => $this->book_image,
             'slug' => $this->slug,
-            'publication_year' => $this->publication_year
+            'publication_year' => $this->publication_year,
+            'isLiked' => Like::where('book_id', $this->id)->where('user_id', 1)->exists(),
+            'likes' => Like::where('book_id', $this->id)->count()
         ];
     }
 }

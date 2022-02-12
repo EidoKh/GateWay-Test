@@ -8,6 +8,7 @@ use App\Http\Resources\CategoryResource;
 use App\Http\Resources\EmptyResource;
 use App\Http\Resources\SingleBookResource;
 use App\Models\Book;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -54,8 +55,11 @@ class BookController extends Controller
     }
     public function mostLiked()
     {
-        return BookResource::collection(Book::limit(10)->get());
-        return BookResource::collection(Book::inRandomOrder()->limit(6)->get());
+        return BookResource::collection(Book::withCount('likes')->orderByDesc('likes_count')->limit(7)->get());
+    }
+    public function newBooks()
+    {
+        return BookResource::collection(Book::latest()->get());
     }
     public function categoryBooks($category_id)
     {
