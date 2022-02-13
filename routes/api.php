@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->get('/check_login', function () {
 
 
 Route::post('login', [\App\Http\Controllers\Api\UserController::class, 'login']);
+Route::post('login-user', [\App\Http\Controllers\Api\UserController::class, 'loginUser']);
 Route::post('register', [\App\Http\Controllers\Api\UserController::class, 'register']);
 Route::post('logout', [\App\Http\Controllers\Api\UserController::class, 'logout']);
 Route::middleware(['auth:sanctum'])->group(function () {

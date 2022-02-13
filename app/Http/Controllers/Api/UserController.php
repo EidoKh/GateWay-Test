@@ -33,6 +33,25 @@ class UserController extends Controller
 
         return response($response, 201);
     }
+    function loginUser(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        // print_r($data);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => ['These credentials do not match our records.']
+            ], 404);
+        }
+
+        $token = $user->createToken('my-app-token')->plainTextToken;
+
+        $response = [
+            'user' => $user,
+            'access_token' => $token
+        ];
+
+        return response($response, 201);
+    }
     function register(Request $request)
     {
         $request->validate([

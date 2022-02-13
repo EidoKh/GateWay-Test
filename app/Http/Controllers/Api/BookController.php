@@ -59,7 +59,7 @@ class BookController extends Controller
     }
     public function newBooks()
     {
-        return BookResource::collection(Book::latest()->get());
+        return BookResource::collection(Book::latest()->limit(7)->get());
     }
     public function categoryBooks($category_id)
     {
