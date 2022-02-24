@@ -22,7 +22,7 @@
             min-w-140-px
           "
         >
-          ت
+          ID
         </th>
         <th
           v-for="column in columns"
@@ -67,7 +67,7 @@
             text-right
           "
         >
-          عمليات
+          Actions
         </th>
       </tr>
     </thead>

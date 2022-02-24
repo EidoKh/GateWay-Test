@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html >
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +18,7 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100" id="app">
-            {{-- @include('layouts.navigation') --}}
+            @include('layouts.navigation')
 
             <!-- Page Heading -->
             {{-- <header class="bg-white shadow">

@@ -1204,7 +1204,6 @@
                 </svg>
                 3/5
               </span>
-              <img src="https://i.imgur.com/OZaT7jl.png" class="rounded-full" />
             </div>
           </div>
           <div

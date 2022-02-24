@@ -2,7 +2,7 @@
   <div class="block w-full overflow-x-auto">
     <div class="mx-2 flex justify-between place-content-end mb-4">
       <div>
-        <h3 class="text-xl">كل المستخدمين</h3>
+        <h3 class="text-xl">All Users</h3>
       </div>
       <div
         class="
@@ -16,7 +16,7 @@
         "
       >
         <router-link :to="{ name: 'users.create' }" class="text-sm font-medium"
-          >إضافة مستخدم</router-link
+          >Add User</router-link
         >
       </div>
     </div>
@@ -44,11 +44,11 @@ export default {
     const { getUsers, users, destroyUser, editUser, viewUser } = useUsers();
     const columns = reactive([
       {
-        label: "الأسم",
+        label: "Name",
         column: "name",
       },
       {
-        label: "ايميل",
+        label: "Email",
         column: "email",
       },
     ]);

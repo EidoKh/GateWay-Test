@@ -1,10 +1,10 @@
 <template>
-  <div class="w-100 text-right pt-6 px-6">
-    <h3 class="text-xl">إضافة مستخدم</h3>
+  <div class="w-100 pt-6 px-6">
+    <h3 class="text-xl">Add User</h3>
   </div>
   <form class="p-6 flex flex-col justify-center" @submit.prevent="saveUser">
-    <div class="flex flex-col text-right">
-      <label for="title" class="">الأسم</label>
+    <div class="flex flex-col">
+      <label for="title" class="">Name</label>
       <input
         type="text"
         name="name"
@@ -24,15 +24,13 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
         "
       />
     </div>
-    <div class="flex flex-col text-right">
-      <label for="email" class="">البريد الالكتروني</label>
+    <div class="flex flex-col">
+      <label for="email" class="">Email</label>
       <input
         lang="en"
-        dir="ltr"
         type="email"
         name="email"
         id="email"
@@ -52,12 +50,11 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
         "
       />
     </div>
-    <div class="flex flex-col text-right">
-      <label for="password" class="">كلمة السر</label>
+    <div class="flex flex-col">
+      <label for="password" class="">Password</label>
       <input
         type="password"
         name="password"
@@ -78,15 +75,13 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
         "
       />
     </div>
-    <div class="flex flex-col text-right">
-      <label for="phone" class="">الهاتف</label>
+    <div class="flex flex-col">
+      <label for="phone" class="">Phone</label>
       <input
         lang="en"
-        dir="ltr"
         type="tel"
         name="phone"
         id="phone"
@@ -105,12 +100,11 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
         "
       />
     </div>
-    <div class="flex flex-col text-right">
-      <label for="location" class="">العنوان</label>
+    <div class="flex flex-col">
+      <label for="location" class="">Address</label>
       <input
         type="text"
         name="location"
@@ -130,14 +124,13 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
         "
       />
     </div>
 
-    <div class="md:flex w-100 text-right">
+    <div class="md:flex w-100">
       <div class="md:w-1/2 w-full">
-        <label for="user_type" class="">نوع المساخدم</label>
+        <label for="user_type" class="">User Type</label>
         <select
           name="user_type"
           id="user_type"
@@ -156,15 +149,14 @@
             dark:text-gray-50
             font-semibold
             focus:border-blue-500 focus:outline-none
-            text-right
           "
         >
-          <option value="s">مشترك</option>
-          <option value="a">مدير</option>
+          <option value="agent">Agent</option>
+          <option value="admin">Admin</option>
         </select>
       </div>
       <div class="md:w-1/2 w-full">
-        <label for="status" class="">الحالة</label>
+        <label for="status" class="">Statue</label>
         <select
           name="status"
           id="status"
@@ -183,11 +175,10 @@
             dark:text-gray-50
             font-semibold
             focus:border-blue-500 focus:outline-none
-            text-right
           "
         >
-          <option value="a">نشط</option>
-          <option value="d">غير نشط</option>
+          <option value="a">Active</option>
+          <option value="d">Deactivate</option>
         </select>
       </div>
     </div>
@@ -215,14 +206,13 @@
           dark:text-gray-50
           font-semibold
           focus:border-blue-500 focus:outline-none
-          text-right
           hidden
         "
         @change="onFileSelected"
         type="file"
         id="user-image"
       />
-      <label for="user-image" class="text-right w-100 flex"
+      <label for="user-image" class="w-100 flex"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-12 cursor-pointer"
@@ -259,7 +249,7 @@
         duration-300
       "
     >
-      حفظ
+      Save
     </button>
   </form>
 </template>
@@ -267,12 +257,10 @@
 <script>
 import { onMounted, reactive, ref } from "vue";
 import useUsers from "../../composables/users";
-import useLookups from "../../composables/lookups";
 
 export default {
   setup() {
     const { storeUser } = useUsers();
-    const { categories, authors, getCategories, getAuthors } = useLookups();
     let today = ref(new Date().toISOString().slice(0, 10));
     const form = reactive({
       name: "",
@@ -284,10 +272,6 @@ export default {
       user_type: "",
       user_image: "",
       added_at: today.value,
-    });
-    onMounted(() => {
-      getCategories();
-      getAuthors();
     });
 
     let file = reactive(null);
@@ -311,8 +295,6 @@ export default {
       saveUser,
       onFileSelected,
       imagePreview,
-      categories,
-      authors,
     };
   },
 };

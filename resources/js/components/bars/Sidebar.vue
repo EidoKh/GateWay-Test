@@ -13,7 +13,7 @@
       "
     >
       <!-- Header -->
-      <navbar @change_theme="toggleTheme" :isDark="isDark" />
+      <!-- <navbar @change_theme="toggleTheme" :isDark="isDark" /> -->
       <!-- ./Header -->
 
       <!-- Sidebar -->
@@ -23,7 +23,7 @@
           fixed
           flex flex-col
           top-14
-          right-0
+          left-0
           w-14
           hover:w-64
           md:w-64
@@ -97,158 +97,11 @@
                   </svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate"
-                  >الرئيسية</span
+                  >Dashboard</span
                 >
               </router-link>
             </li>
-            <li>
-              <router-link
-                :to="{ name: 'categories.index' }"
-                class="
-                  relative
-                  flex flex-row
-                  items-center
-                  h-11
-                  focus:outline-none
-                  hover:bg-blue-800
-                  dark:hover:bg-gray-600
-                  text-white-600
-                  hover:text-white-800
-                  border-l-4 border-transparent
-                  hover:border-blue-500
-                  dark:hover:border-gray-800
-                  pr-6e
-                "
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 text-sm tracking-wide truncate">الفئات</span>
-                <span
-                  class="
-                    hidden
-                    md:block
-                    px-2
-                    py-0.5
-                    ml-auto
-                    text-xs
-                    font-medium
-                    tracking-wide
-                    text-blue-500
-                    bg-indigo-50
-                    rounded-full
-                  "
-                  >جديد</span
-                >
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                :to="{ name: 'books.index' }"
-                class="
-                  relative
-                  flex flex-row
-                  items-center
-                  h-11
-                  focus:outline-none
-                  hover:bg-blue-800
-                  dark:hover:bg-gray-600
-                  text-white-600
-                  hover:text-white-800
-                  border-l-4 border-transparent
-                  hover:border-blue-500
-                  dark:hover:border-gray-800
-                  pr-6e
-                "
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 text-sm tracking-wide truncate">الكتب</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                :to="{ name: 'authors.index' }"
-                class="
-                  relative
-                  flex flex-row
-                  items-center
-                  h-11
-                  focus:outline-none
-                  hover:bg-blue-800
-                  dark:hover:bg-gray-600
-                  text-white-600
-                  hover:text-white-800
-                  border-l-4 border-transparent
-                  hover:border-blue-500
-                  dark:hover:border-gray-800
-                  pr-6e
-                "
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 text-sm tracking-wide truncate"
-                  >المؤلفون</span
-                >
-                <span
-                  class="
-                    hidden
-                    md:block
-                    px-2
-                    py-0.5
-                    ml-auto
-                    text-xs
-                    font-medium
-                    tracking-wide
-                    text-red-500
-                    bg-red-50
-                    rounded-full
-                  "
-                  >1.2k</span
-                >
-              </router-link>
-            </li>
+            <!--users  -->
             <li>
               <router-link
                 :to="{ name: 'users.index' }"
@@ -284,30 +137,13 @@
                     ></path>
                   </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate"
-                  >المستخدمين</span
-                >
-                <span
-                  class="
-                    hidden
-                    md:block
-                    px-2
-                    py-0.5
-                    ml-auto
-                    text-xs
-                    font-medium
-                    tracking-wide
-                    text-red-500
-                    bg-red-50
-                    rounded-full
-                  "
-                  >1.2k</span
-                >
+                <span class="ml-2 text-sm tracking-wide truncate">Agents</span>
               </router-link>
             </li>
+            <!--orders  -->
             <li>
               <router-link
-                :to="{ name: 'reservations.index' }"
+                :to="{ name: 'orders.index' }"
                 class="
                   relative
                   flex flex-row
@@ -340,27 +176,10 @@
                     ></path>
                   </svg>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate"
-                  >الحجوزات</span
-                >
-                <span
-                  class="
-                    hidden
-                    md:block
-                    px-2
-                    py-0.5
-                    ml-auto
-                    text-xs
-                    font-medium
-                    tracking-wide
-                    text-red-500
-                    bg-red-50
-                    rounded-full
-                  "
-                  >1.2k</span
-                >
+                <span class="ml-2 text-sm tracking-wide truncate">Orders</span>
               </router-link>
             </li>
+            <!-- end users -->
             <li class="px-5 hidden md:block">
               <div class="flex flex-row items-center mt-5 h-8">
                 <div
@@ -460,60 +279,6 @@
                 >
               </a>
             </li>
-            <li>
-              <router-link
-                :to="{ name: 'tests.index' }"
-                class="
-                  relative
-                  flex flex-row
-                  items-center
-                  h-11
-                  focus:outline-none
-                  hover:bg-blue-800
-                  dark:hover:bg-gray-600
-                  text-white-600
-                  hover:text-white-800
-                  border-l-4 border-transparent
-                  hover:border-blue-500
-                  dark:hover:border-gray-800
-                  pr-6e
-                "
-              >
-                <span class="inline-flex justify-center items-center ml-4">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                    ></path>
-                  </svg>
-                </span>
-                <span class="ml-2 text-sm tracking-wide truncate">تجريبي</span>
-                <span
-                  class="
-                    hidden
-                    md:block
-                    px-2
-                    py-0.5
-                    ml-auto
-                    text-xs
-                    font-medium
-                    tracking-wide
-                    text-blue-500
-                    bg-indigo-50
-                    rounded-full
-                  "
-                  >تجريبي</span
-                >
-              </router-link>
-            </li>
           </ul>
           <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs">
             Copyright @2021
@@ -521,7 +286,7 @@
         </div>
       </div>
       <!-- ./Sidebar -->
-      <div class="h-full mr-14 mt-16 mb-10 md:mr-64">
+      <div class="h-full ml-14 mt-16 mb-10 md:ml-64">
         <router-view />
       </div>
     </div>
