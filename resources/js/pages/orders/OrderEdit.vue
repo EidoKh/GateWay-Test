@@ -198,7 +198,7 @@
   </form>
 </template>
 <script>
-import useOrders from "../../composables/orders";
+import useOrders from "../../composable/orders";
 import useConfig from "../../config";
 import { onMounted, reactive, ref } from "vue";
 

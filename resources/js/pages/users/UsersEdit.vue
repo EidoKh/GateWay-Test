@@ -263,7 +263,7 @@
   </form>
 </template>
 <script>
-import useUsers from "../../composables/users";
+import useUsers from "../../composable/users";
 import useConfig from "../../config";
 import { onMounted, reactive, ref } from "vue";
 

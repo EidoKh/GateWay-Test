@@ -199,7 +199,7 @@
 
 <script>
 import { onMounted, reactive, ref } from "vue";
-import useOrders from "../../composables/orders";
+import useOrders from "../../composable/orders";
 
 export default {
   setup() {

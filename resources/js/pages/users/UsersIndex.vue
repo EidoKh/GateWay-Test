@@ -33,8 +33,8 @@
 <script>
 import { reactive, ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
-import useUsers from "../../composables/users";
-import IndexTable from "../tables/IndexTable";
+import useUsers from "../../composable/users";
+import IndexTable from "../../components/tables/IndexTable";
 
 export default {
   components: {

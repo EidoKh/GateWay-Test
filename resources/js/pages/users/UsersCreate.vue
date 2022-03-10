@@ -256,7 +256,7 @@
 
 <script>
 import { onMounted, reactive, ref } from "vue";
-import useUsers from "../../composables/users";
+import useUsers from "../../composable/users";
 
 export default {
   setup() {

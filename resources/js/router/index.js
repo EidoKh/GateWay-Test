@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Dashboard from "../components/Dashboard";
+import Dashboard from "../pages/Dashboard";
 
-import UsersIndex from "../components/users/UsersIndex";
-import UsersCreate from "../components/users/UsersCreate";
-import UsersEdit from "../components/users/UsersEdit";
+import UsersIndex from "../pages/users/UsersIndex";
+import UsersCreate from "../pages/users/UsersCreate";
+import UsersEdit from "../pages/users/UsersEdit";
 
-import OrderIndex from "../components/orders/OrderIndex";
-import OrderCreate from "../components/orders/OrderCreate";
-import OrderEdit from "../components/orders/OrderEdit";
+import OrderIndex from "../pages/orders/OrderIndex";
+import OrderCreate from "../pages/orders/OrderCreate";
+import OrderEdit from "../pages/orders/OrderEdit";
 
 import useConfig from "../config";
 
