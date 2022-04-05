@@ -1,18 +1,28 @@
 <template>
-  <product-create></product-create>
+  <div
+    v-if="addProduct"
+    v-click-outside="
+      () => {
+        addProduct = false;
+      }
+    "
+    class="absolute bg-gray-600 w-3/4 rounded-md z-10"
+  >
+    <product-create></product-create>
+  </div>
   <div class="mt-4 mx-4">
-    <div class="flex justify-between">
-      <h1 class="text-xl">All Products</h1>
+    <div class="flex justify-between mb-2">
+      <h1 class="text-xl mt-2">All Products</h1>
       <button
         type="submit"
         class="
-          md:w-32
+          md:w-36
           bg-blue-600
           dark:bg-gray-100
           text-white
           dark:text-gray-800
           font-bold
-          py-3
+          py-2
           px-6
           rounded-lg
           hover:bg-blue-500
@@ -21,8 +31,9 @@
           ease-in-out
           duration-300
         "
+        @click="addProduct = true"
       >
-        Submit
+        Add Product
       </button>
     </div>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
@@ -473,16 +484,23 @@
       </div>
     </div>
   </div>
+  {{ products }}
 </template>
 <script>
 import { onMounted, ref } from "@vue/runtime-core";
 import ProductCreate from "./ProductCreate.vue";
+import useProducts from "../composable/products";
 import axios from "axios";
 export default {
   components: { ProductCreate },
   setup() {
     let user = ref(null);
-    return { user };
+    let addProduct = ref(false);
+    const { products, getProducts } = useProducts();
+    onMounted(() => {
+      getProducts();
+    });
+    return { user, addProduct, products };
   },
 };
 </script>

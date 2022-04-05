@@ -1,12 +1,12 @@
 <template>
-  <form class="p-6 flex flex-col justify-center">
+  <form class="p-6 flex flex-col justify-center" @submit.prevent="saveProduct">
     <div class="flex flex-col">
-      <label for="name" class="hidden">Full Name</label>
       <input
         type="name"
         name="name"
         id="name"
-        placeholder="Full Name"
+        v-model="form.name"
+        placeholder="Recipe Name"
         class="
           w-100
           mt-2
@@ -25,11 +25,11 @@
       />
     </div>
     <div class="flex flex-col mt-2">
-      <label for="email" class="hidden">Email</label>
-
       <textarea
-        name="description"
-        id="description"
+        name="ingredients"
+        id="ingredients"
+        v-model="form.ingredients"
+        placeholder="Separate each ingredient with \ :&#10;&#10;Milk \ 2 Eggs \ 1/3 Cub Sugar"
         rows="6"
         class="
           w-full
@@ -50,11 +50,11 @@
     </div>
 
     <div class="flex flex-col mt-2">
-      <label for="email" class="hidden">Email</label>
-
       <textarea
-        name="description"
-        id="description"
+        name="steps"
+        id="steps"
+        v-model="form.steps"
+        placeholder="Separate each step with a \ :&#10;&#10;Preheat oven to 350°F \ &#10;Combine ingredients in pie crust \ &#10;Bake until crust is golden brown. \"
         rows="6"
         class="
           w-full
@@ -97,3 +97,27 @@
     </button>
   </form>
 </template>
+<script>
+import { reactive, ref } from "@vue/reactivity";
+import useProducts from "../composable/products";
+export default {
+  setup() {
+    let form = ref({
+      name: "",
+      ingredients: "",
+      steps: "",
+    });
+    const { storeProduct } = useProducts();
+    const saveProduct = async () => {
+      await storeProduct({ form });
+      form.value = {
+        name: "",
+        ingredients: "",
+        steps: "",
+      };
+    };
+
+    return { form, saveProduct };
+  },
+};
+</script>
