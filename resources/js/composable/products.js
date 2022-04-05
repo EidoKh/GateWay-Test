@@ -12,7 +12,7 @@ export default function useProducts() {
 
     const getProducts = async () => {
         let response = await axios.get("/api/products");
-        products.value = response.data.data;
+        products.value = response.data;
     };
 
     const getProduct = async (id) => {
@@ -20,11 +20,11 @@ export default function useProducts() {
         product.value = response.data.data[0];
     };
     const storeProduct = async (data) => {
-        console.log(data.form.value);
         errors.value = "";
         try {
             await axios.post("/api/products", data.form.value);
-            await router.push({ name: "dashboard" });
+            await getProducts();
+            // await router.push({ name: "dashboard" });
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors;

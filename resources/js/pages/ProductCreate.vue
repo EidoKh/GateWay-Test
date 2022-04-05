@@ -107,7 +107,7 @@ export default {
       ingredients: "",
       steps: "",
     });
-    const { storeProduct } = useProducts();
+    const { storeProduct, getProducts } = useProducts();
     const saveProduct = async () => {
       await storeProduct({ form });
       form.value = {

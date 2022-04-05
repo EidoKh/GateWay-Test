@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ingredient;
 use App\Models\Product;
+use App\Models\Step;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -38,11 +40,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request);
         $product = new Product();
         $product->name = $request->name;
         $product->save();
-        return ['message' => 'Product Saved Successfully'];
+
+        $steps = explode('\\', $request->steps);
+        foreach ($steps as $step) {
+            Step::create(['step' => trim($step), 'product_id' => $product->id]);
+        }
+
+        $ingredients = explode('\\', $request->ingredients);
+        foreach ($ingredients as $ingredient) {
+            Ingredient::create(['ingredient' => trim($ingredient), 'product_id' => $product->id]);
+        }
+
+
+
+
+
+
+        // return ['message' => 'Product Saved Successfully'];
     }
 
     /**
