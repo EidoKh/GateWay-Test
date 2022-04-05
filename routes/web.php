@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->name('dashboard');
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -26,6 +26,6 @@ Route::get('/', function () {
 
 require __DIR__ . '/auth.php';
 
-Route::view('/{any}', 'dashboard')->middleware('auth')
+Route::view('/{any}', 'dashboard')
 
     ->where('any', '.*');
