@@ -10,9 +10,19 @@ export default function useProducts() {
     const errors = ref("");
     const { getHeader } = useConfig();
 
-    const getProducts = async (keyword) => {
-        let response = await axios.get(`/api/products?keyword=${keyword}`);
-        products.value = response.data;
+    const getProducts = async (keyword, url) => {
+        if (url != null) {
+            let response = await axios.get(url);
+            products.value = response.data;
+            console.log("if");
+        } else {
+            let response = await axios.get(
+                `/api/products?keyword=${keyword}&page=1`
+            );
+            products.value = response.data;
+
+            console.log("else");
+        }
     };
 
     const getProduct = async (id) => {
@@ -23,7 +33,7 @@ export default function useProducts() {
         errors.value = "";
         try {
             await axios.post("/api/products", data.form.value);
-            await getProducts();
+            await getProducts("", null);
             // await router.push({ name: "dashboard" });
         } catch (e) {
             if (e.response.status === 422) {

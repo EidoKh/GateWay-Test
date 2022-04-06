@@ -51,7 +51,7 @@
         name="name"
         id="name"
         v-model="keyword"
-        @input="getProducts(keyword)"
+        @input="getProducts(keyword, null)"
         placeholder="Search in Products"
         class="
           w-100
@@ -111,7 +111,7 @@
                 dark:text-gray-400
                 cursor-pointer
               "
-              v-for="product in products"
+              v-for="product in products.data"
               :key="product.id"
             >
               <td class="px-4 py-3 text-sm flex justify-between">
@@ -173,13 +173,15 @@
           dark:text-gray-400 dark:bg-gray-800
         "
       >
-        <span class="flex items-center col-span-3"> Showing 21-30 of 100 </span
+        <span class="flex items-center col-span-3">
+          Showing {{ products.from }}-{{ products.to }} of
+          {{ products.total }} </span
         ><span class="col-span-2"></span
         ><!-- Pagination --><span
           class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end"
           ><nav aria-label="Table navigation">
             <ul class="inline-flex items-center">
-              <li>
+              <!-- <li>
                 <button
                   class="
                     px-3
@@ -201,8 +203,8 @@
                     ></path>
                   </svg>
                 </button>
-              </li>
-              <li>
+              </li> -->
+              <li v-for="link in products.links" :key="link.label">
                 <button
                   class="
                     px-3
@@ -210,104 +212,27 @@
                     rounded-md
                     focus:outline-none focus:shadow-outline-purple
                   "
-                >
-                  1
-                </button>
-              </li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    rounded-md
-                    focus:outline-none focus:shadow-outline-purple
+                  :class="
+                    products.current_page == link.label
+                      ? 'text-white dark:text-gray-800 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md'
+                      : ''
                   "
+                  @click="getProducts('', link.url)"
                 >
-                  2
-                </button>
-              </li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    text-white
-                    dark:text-gray-800
-                    transition-colors
-                    duration-150
-                    bg-blue-600
-                    dark:bg-gray-100
-                    border border-r-0 border-blue-600
-                    dark:border-gray-100
-                    rounded-md
-                    focus:outline-none focus:shadow-outline-purple
-                  "
-                >
-                  3
-                </button>
-              </li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    rounded-md
-                    focus:outline-none focus:shadow-outline-purple
-                  "
-                >
-                  4
-                </button>
-              </li>
-              <li><span class="px-3 py-1">...</span></li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    rounded-md
-                    focus:outline-none focus:shadow-outline-purple
-                  "
-                >
-                  8
-                </button>
-              </li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    rounded-md
-                    focus:outline-none focus:shadow-outline-purple
-                  "
-                >
-                  9
-                </button>
-              </li>
-              <li>
-                <button
-                  class="
-                    px-3
-                    py-1
-                    rounded-md rounded-r-lg
-                    focus:outline-none focus:shadow-outline-purple
-                  "
-                  aria-label="Next"
-                >
-                  <svg
-                    class="w-4 h-4 fill-current"
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
+                  <span
+                    :class="
+                      link.url != null && products.current_page != link.label
+                        ? 'text-white'
+                        : ''
+                    "
                   >
-                    <path
-                      d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                      clip-rule="evenodd"
-                      fill-rule="evenodd"
-                    ></path>
-                  </svg>
+                    {{ link.label }}
+                  </span>
                 </button>
               </li>
-            </ul></nav
-        ></span>
+            </ul>
+          </nav></span
+        >
       </div>
     </div>
   </div>
@@ -320,7 +245,11 @@ import ProductShow from "./ProductShow.vue";
 import useProducts from "../composable/products";
 import { useSwal } from "../plugins/useSwal.js";
 export default {
-  components: { ProductCreate, ProductShow, ProductEdit },
+  components: {
+    ProductCreate,
+    ProductShow,
+    ProductEdit,
+  },
   setup() {
     let Swal = useSwal();
     let user = ref(null);
@@ -333,7 +262,7 @@ export default {
     const { products, getProducts, getProduct, product, destroyProduct } =
       useProducts();
     onMounted(() => {
-      getProducts(keyword.value);
+      getProducts(keyword.value, null);
     });
     const showProduct = async (id) => {
       await getProduct(id);
@@ -353,7 +282,7 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           await destroyProduct(id);
-          await getProducts(keyword.value);
+          await getProducts(keyword.value, null);
           Swal.fire("Deleted!", "Product has been deleted.", "success");
         }
       });
@@ -369,7 +298,7 @@ export default {
     const closePopup = async () => {
       isEdit.value = false;
       isCreate.value = false;
-      getProducts(keyword.value);
+      getProducts(keyword.value, null);
     };
     return {
       user,
