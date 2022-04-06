@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Ingredient;
 use App\Models\Product;
-use App\Models\Step;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -16,9 +14,13 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+
+
+
+
+        $products = Product::where('name', 'LIKE', '%' . $request->keyword . '%')->get();
         return $products;
     }
 
@@ -40,26 +42,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info($request);
         $product = new Product();
         $product->name = $request->name;
+        $product->ingredients = $request->ingredients;
+        $product->steps = $request->steps;
         $product->save();
 
-        $steps = explode('\\', $request->steps);
-        foreach ($steps as $step) {
-            Step::create(['step' => trim($step), 'product_id' => $product->id]);
-        }
-
-        $ingredients = explode('\\', $request->ingredients);
-        foreach ($ingredients as $ingredient) {
-            Ingredient::create(['ingredient' => trim($ingredient), 'product_id' => $product->id]);
-        }
-
-
-
-
-
-
-        // return ['message' => 'Product Saved Successfully'];
+        return ['message' => 'Product Saved Successfully'];
     }
 
     /**
@@ -68,9 +58,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**
@@ -91,9 +81,15 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        Log::info($request);
+        $product->update([
+            "name" => $request->name,
+            "ingredients" => $request->ingredients,
+            "steps" => $request->steps,
+        ]);
+        return ['message' => 'Product Saved Successfully'];
     }
 
     /**
@@ -102,8 +98,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return response()->noContent();
     }
 }

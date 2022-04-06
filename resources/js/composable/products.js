@@ -10,14 +10,14 @@ export default function useProducts() {
     const errors = ref("");
     const { getHeader } = useConfig();
 
-    const getProducts = async () => {
-        let response = await axios.get("/api/products");
+    const getProducts = async (keyword) => {
+        let response = await axios.get(`/api/products?keyword=${keyword}`);
         products.value = response.data;
     };
 
     const getProduct = async (id) => {
         let response = await axios.get("/api/products/" + id);
-        product.value = response.data.data[0];
+        product.value = response.data;
     };
     const storeProduct = async (data) => {
         errors.value = "";
@@ -32,12 +32,11 @@ export default function useProducts() {
         }
     };
 
-    const updateProduct = async (id, data) => {
+    const updateProduct = async (data) => {
         errors.value = "";
         let header = getHeader();
         try {
-            await axios.put("/api/products/" + id, product.value);
-            await router.push({ name: "products.index" });
+            await axios.put("/api/products/" + data.id, data);
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors;

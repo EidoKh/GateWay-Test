@@ -282,7 +282,6 @@ export default {
     let user = ref({});
     onMounted(() => {
       user.value = JSON.parse(window.localStorage.getItem("logged_in_user"));
-      console.log(user.value);
     });
 
     async function logoutUser() {
@@ -294,9 +293,7 @@ export default {
           await location.reload();
           router.push({ name: "login" });
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     }
     return { isOpen, user, APP_URL, logoutUser };
   },

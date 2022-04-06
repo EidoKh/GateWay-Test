@@ -98,16 +98,20 @@
   </form>
 </template>
 <script>
-import { reactive, ref } from "@vue/reactivity";
+import { ref } from "@vue/reactivity";
 import useProducts from "../composable/products";
+import { useSwal } from "../plugins/useSwal.js";
 export default {
-  setup() {
+  emits: ["close_this"],
+  props: {},
+  setup(props, { emit }) {
+    let Swal = useSwal();
     let form = ref({
       name: "",
       ingredients: "",
       steps: "",
     });
-    const { storeProduct, getProducts } = useProducts();
+    const { storeProduct } = useProducts();
     const saveProduct = async () => {
       await storeProduct({ form });
       form.value = {
@@ -115,6 +119,8 @@ export default {
         ingredients: "",
         steps: "",
       };
+      emit("close_this");
+      Swal.fire("Created!", "Product has been created.", "success");
     };
 
     return { form, saveProduct };
