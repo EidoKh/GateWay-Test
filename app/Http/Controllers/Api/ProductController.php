@@ -21,7 +21,6 @@ class ProductController extends Controller
 
 
         $products = Product::where('name', 'LIKE', '%' . $request->keyword . '%')->paginate(4);
-        // $products = Product::where('name', 'LIKE', '%' . $request->keyword . '%')->get();
         return $products;
     }
 
